@@ -8,13 +8,6 @@ class SearchPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final AudioPlayerController controller = Get.find<AudioPlayerController>();
 
-    // final String testAudioUrl =
-    //     "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3";
-    // // 画面ロード時に音声をセット
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   controller.loadAudio(testAudioUrl);
-    // });
-
     return Scaffold(
       appBar: AppBar(title: const Text("GetX Audio Player")),
       body: Padding(

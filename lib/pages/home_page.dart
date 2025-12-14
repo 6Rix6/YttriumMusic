@@ -132,54 +132,57 @@ class _HomePageState extends State<HomePage> {
                     icon: const Icon(CupertinoIcons.search),
                     onPressed: () {},
                   ),
-                  if (authController.isLoggedIn.value)
-                    IconButton(
-                      icon: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              authController.accountPhotoUrl.value,
+                  Obx(() {
+                    if (authController.isLoggedIn.value) {
+                      return IconButton(
+                        icon: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                authController.accountPhotoUrl.value,
+                              ),
+                              fit: BoxFit.cover,
                             ),
-                            fit: BoxFit.cover,
                           ),
                         ),
-                      ),
-                      onPressed: () {
-                        youtubeController.logout();
-                      },
-                    )
-                  else
-                    IconButton(
-                      icon: const Icon(CupertinoIcons.person),
-                      onPressed: () async {
-                        final result =
-                            await Get.to(() => const LoginPage())
-                                as LoginResult?;
-                        try {
-                          if (result != null) {
-                            await youtubeController.login(
-                              result.innerTubeCookie,
-                            );
+                        onPressed: () {
+                          youtubeController.logout();
+                        },
+                      );
+                    } else {
+                      return IconButton(
+                        icon: const Icon(CupertinoIcons.person),
+                        onPressed: () async {
+                          final result =
+                              await Get.to(() => const LoginPage())
+                                  as LoginResult?;
+                          try {
+                            if (result != null) {
+                              await youtubeController.login(
+                                result.innerTubeCookie,
+                              );
+                              Get.snackbar(
+                                "Success",
+                                "Logged in successfully",
+                                snackPosition: SnackPosition.TOP,
+                              );
+                            } else {
+                              throw Exception("Login failed");
+                            }
+                          } catch (e) {
                             Get.snackbar(
-                              "Success",
-                              "Logged in successfully",
+                              "Error",
+                              e.toString(),
                               snackPosition: SnackPosition.TOP,
                             );
-                          } else {
-                            throw Exception("Login failed");
                           }
-                        } catch (e) {
-                          Get.snackbar(
-                            "Error",
-                            e.toString(),
-                            snackPosition: SnackPosition.TOP,
-                          );
-                        }
-                      },
-                    ),
+                        },
+                      );
+                    }
+                  }),
                 ],
                 backgroundColor: Colors.transparent,
                 surfaceTintColor: Colors.transparent,

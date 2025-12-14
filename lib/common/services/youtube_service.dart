@@ -55,7 +55,6 @@ class YoutubeService extends GetxService {
   }
 
   Future<void> playSong(yt.SongItem song) async {
-    print(song.id);
     final player = await youtube.player(
       song.id,
       client: yt.YouTubeClient.android,
@@ -73,7 +72,12 @@ class YoutubeService extends GetxService {
         final bestFormat = audioFormats.reduce(
           (a, b) => (a.bitrate > b.bitrate) ? a : b,
         );
-        await audioPlayerController.loadAudio(bestFormat.url!);
+        await audioPlayerController.loadAudio(
+          bestFormat.url!,
+          title: song.title,
+          artist: song.artists?.map((e) => e.name).join(', '),
+          artworkUrl: song.thumbnails?.getBest()?.url,
+        );
         audioPlayerController.play();
       },
       error: (value) {

@@ -1,75 +1,80 @@
+// audio_player_controller.dart
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:audio_service/audio_service.dart';
+import 'package:yttrium_music/common/services/audio_handler.dart'; // MyAudioHandlerの型キャスト用
 
 class AudioPlayerController extends GetxController {
-  final AudioPlayer _audioPlayer = AudioPlayer();
+  late final AudioHandler audioHandler;
+
+  AudioPlayerController({required this.audioHandler});
 
   final isPlaying = false.obs;
   final isBuffering = false.obs;
+  final processingState = AudioProcessingState.idle.obs;
   final position = Duration.zero.obs;
   final duration = Duration.zero.obs;
+  final currentMediaItem = Rxn<MediaItem>();
 
-  final processingState = ProcessingState.idle.obs;
+  bool get hasTrack => currentMediaItem.value != null;
 
   @override
   void onInit() {
     super.onInit();
-    _setupAudioPlayerListeners();
+    _bindAudioHandlerStreams();
   }
 
-  @override
-  void onClose() {
-    _audioPlayer.dispose();
-    super.onClose();
-  }
+  void _bindAudioHandlerStreams() {
+    final playbackState$ = audioHandler.playbackState;
+    final mediaItem$ = audioHandler.mediaItem;
+    final position$ = AudioService.position;
 
-  // set streams
-  void _setupAudioPlayerListeners() {
-    isPlaying.bindStream(
-      _audioPlayer.playerStateStream.map((state) => state.playing),
-    );
-    position.bindStream(_audioPlayer.positionStream);
-    duration.bindStream(
-      _audioPlayer.durationStream.map((d) => d ?? Duration.zero),
-    );
-    processingState.bindStream(
-      _audioPlayer.playerStateStream.map((state) => state.processingState),
-    );
+    isPlaying.bindStream(playbackState$.map((s) => s.playing));
     isBuffering.bindStream(
-      _audioPlayer.playerStateStream.map(
-        (state) =>
-            state.processingState == ProcessingState.buffering ||
-            state.processingState == ProcessingState.loading,
+      playbackState$.map(
+        (s) =>
+            s.processingState == AudioProcessingState.buffering ||
+            s.processingState == AudioProcessingState.loading,
       ),
     );
+    processingState.bindStream(playbackState$.map((s) => s.processingState));
+
+    currentMediaItem.bindStream(mediaItem$);
+    duration.bindStream(
+      mediaItem$.map((item) => item?.duration ?? Duration.zero),
+    );
+
+    position.bindStream(position$);
   }
 
-  // load audio from url
-  Future<void> loadAudio(String url) async {
-    try {
-      await _audioPlayer.setUrl(url);
-    } catch (e) {
-      Get.snackbar("Error", "Failed to load audio");
+  Future<void> loadAudio(
+    String url, {
+    String? title,
+    String? artist,
+    String? artworkUrl,
+  }) async {
+    if (audioHandler is MyAudioHandler) {
+      await (audioHandler as MyAudioHandler).loadUrl(
+        url,
+        title: title,
+        artist: artist,
+        artworkUrl: artworkUrl,
+      );
     }
   }
 
-  // play
-  void play() {
-    _audioPlayer.play();
+  void play() => audioHandler.play();
+
+  void pause() => audioHandler.pause();
+
+  void stop() => audioHandler.stop();
+
+  void togglePlayPause() {
+    if (isPlaying.value) {
+      pause();
+    } else {
+      play();
+    }
   }
 
-  // pause
-  void pause() {
-    _audioPlayer.pause();
-  }
-
-  // stop
-  void stop() {
-    _audioPlayer.stop();
-  }
-
-  // seek
-  void seek(Duration position) {
-    _audioPlayer.seek(position);
-  }
+  void seek(Duration pos) => audioHandler.seek(pos);
 }
