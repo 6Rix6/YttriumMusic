@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 
 import 'package:yttrium_music/common/services/storage_service.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
@@ -10,7 +11,6 @@ import 'package:yttrium_music/common/services/audio_handler.dart';
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/controllers/settings_controller.dart';
-import 'package:yttrium_music/common/consts/color_schems.dart';
 import 'package:yttrium_music/common/widgets/player/player.dart';
 import 'package:yttrium_music/common/widgets/player/wallpaper.dart';
 
@@ -58,16 +58,27 @@ class YoutubeMusic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final settingsController = Get.find<SettingsController>();
-    return Obx(
-      () => GetMaterialApp(
-        title: 'YouTube Music',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: settingsController.themeMode,
-        home: const MainPage(),
+    return DynamicColorBuilder(
+      builder: (lightColorScheme, darkColorScheme) => Obx(
+        () => GetMaterialApp(
+          title: 'YouTube Music',
+          theme: _buildTheme(Brightness.light, lightColorScheme),
+          darkTheme: _buildTheme(Brightness.dark, darkColorScheme),
+          themeMode: settingsController.themeMode,
+          home: const MainPage(),
+        ),
       ),
     );
   }
+}
+
+ThemeData _buildTheme(Brightness brightness, ColorScheme? colorScheme) {
+  return ThemeData(
+    useMaterial3: true,
+    brightness: brightness,
+    colorScheme: colorScheme,
+    sliderTheme: SliderThemeData(year2023: false),
+  );
 }
 
 class MainPage extends StatefulWidget {

@@ -69,7 +69,7 @@ class SettingGroup extends StatelessWidget {
           // header
           Container(
             decoration: BoxDecoration(
-              color: Colors.grey.shade800,
+              color: theme.colorScheme.secondaryContainer,
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
             ),
             child: ListTile(

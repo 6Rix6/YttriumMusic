@@ -13,6 +13,7 @@ class AppearanceDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final modal = ModalManager(context: context);
+    final theme = Theme.of(context);
     final settingsController = Get.find<SettingsController>();
     return Obx(
       () => SettingDetailPage(
@@ -33,7 +34,7 @@ class AppearanceDetailPage extends StatelessWidget {
                     titleWidget: Container(
                       width: double.infinity,
                       height: 60,
-                      color: Colors.grey.shade800,
+                      color: theme.colorScheme.secondaryContainer,
                       child: const Center(
                         child: Text(
                           "Select theme mode",

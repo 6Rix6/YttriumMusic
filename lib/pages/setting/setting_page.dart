@@ -93,7 +93,7 @@ class SettingPage extends StatelessWidget {
         width: 48,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.grey.shade800,
+          color: theme.colorScheme.secondaryContainer,
         ),
         clipBehavior: Clip.antiAlias,
         child: isLoggedIn
@@ -181,7 +181,7 @@ class SettingPage extends StatelessWidget {
               width: 40,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
-                color: Colors.grey.shade800,
+                color: theme.colorScheme.secondaryContainer,
               ),
               child: Icon(item.icon, size: 24),
             ),

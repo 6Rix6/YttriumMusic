@@ -21,6 +21,7 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   text_scroll: ^0.2.1
   figma_squircle: ^0.6.3
+  dynamic_color: ^1.8.1
 
   # Media
   innertube_dart:
