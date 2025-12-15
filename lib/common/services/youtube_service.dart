@@ -2,15 +2,18 @@ import 'package:get/get.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
+import 'package:yttrium_music/common/controllers/theme_controller.dart';
 
 class YoutubeService extends GetxService {
   late final yt.YouTube youtube;
   final AuthController authController;
   final AudioPlayerController audioPlayerController;
+  final ThemeController themeController;
 
   YoutubeService({
     required this.authController,
     required this.audioPlayerController,
+    required this.themeController,
   });
 
   Future<YoutubeService> init() async {
@@ -72,13 +75,20 @@ class YoutubeService extends GetxService {
         final bestFormat = audioFormats.reduce(
           (a, b) => (a.bitrate > b.bitrate) ? a : b,
         );
+
+        final artworkUrl = song.thumbnails?.getBest()?.url;
+
         await audioPlayerController.loadAudio(
           bestFormat.url!,
           title: song.title,
           artist: song.artists?.map((e) => e.name).join(', '),
-          artworkUrl: song.thumbnails?.getBest()?.url,
+          artworkUrl: artworkUrl,
         );
         audioPlayerController.play();
+
+        if (artworkUrl != null) {
+          themeController.setCurrentColorSchemeFromImageProvider(artworkUrl);
+        }
       },
       error: (value) {
         throw value;

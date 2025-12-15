@@ -11,6 +11,7 @@ import 'package:yttrium_music/common/services/audio_handler.dart';
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/controllers/settings_controller.dart';
+import 'package:yttrium_music/common/controllers/theme_controller.dart';
 import 'package:yttrium_music/common/widgets/player/player.dart';
 import 'package:yttrium_music/common/widgets/player/wallpaper.dart';
 
@@ -26,9 +27,11 @@ void main() async {
   final authController = Get.put(
     AuthController(storageService: storageService),
   );
-  // ignore: unused_local_variable
   final settingsController = Get.put(
     SettingsController(storageService: storageService),
+  );
+  final themeController = Get.put(
+    ThemeController(settingsController: settingsController),
   );
   final audioHandler = await Get.putAsync(() => initAudioService());
   final audioPlayerController = Get.put(
@@ -38,6 +41,7 @@ void main() async {
     () => YoutubeService(
       authController: authController,
       audioPlayerController: audioPlayerController,
+      themeController: themeController,
     ).init(),
   );
 
@@ -57,17 +61,27 @@ class YoutubeMusic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final settingsController = Get.find<SettingsController>();
     return DynamicColorBuilder(
-      builder: (lightColorScheme, darkColorScheme) => Obx(
-        () => GetMaterialApp(
+      builder: (lightColorScheme, darkColorScheme) => Obx(() {
+        final themeController = Get.find<ThemeController>();
+        return GetMaterialApp(
           title: 'YouTube Music',
-          theme: _buildTheme(Brightness.light, lightColorScheme),
-          darkTheme: _buildTheme(Brightness.dark, darkColorScheme),
-          themeMode: settingsController.themeMode,
+          theme: _buildTheme(
+            Brightness.light,
+            themeController.shouldUseDynamicColor
+                ? themeController.currentLightColorScheme.value!
+                : lightColorScheme,
+          ),
+          darkTheme: _buildTheme(
+            Brightness.dark,
+            themeController.shouldUseDynamicColor
+                ? themeController.currentDarkColorScheme.value!
+                : darkColorScheme,
+          ),
+          themeMode: themeController.themeMode,
           home: const MainPage(),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

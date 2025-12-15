@@ -105,12 +105,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
+    final theme = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(120),
         child: Container(
-          color: Colors.black.withValues(alpha: _appBarOpacity),
+          color: theme.colorScheme.surfaceContainer.withValues(
+            alpha: _appBarOpacity,
+          ),
           child: Column(
             children: [
               AppBar(
@@ -194,35 +197,35 @@ class _HomePageState extends State<HomePage> {
         controller: _scrollController,
         child: Stack(
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: 600,
-              child: Stack(
-                children: <Widget>[
-                  // background image
-                  if (_background != null)
-                    Image.network(
-                      _background?.getBest()?.url ?? "",
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                    ),
+            // SizedBox(
+            //   width: double.infinity,
+            //   height: 600,
+            //   child: Stack(
+            //     children: <Widget>[
+            //       // background image
+            //       if (_background != null)
+            //         Image.network(
+            //           _background?.getBest()?.url ?? "",
+            //           fit: BoxFit.cover,
+            //           width: double.infinity,
+            //           height: double.infinity,
+            //         ),
 
-                  // gradient overlay
-                  Positioned.fill(
-                    child: Container(
-                      decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [Colors.black12, Colors.black],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            //       // gradient overlay
+            //       Positioned.fill(
+            //         child: Container(
+            //           decoration: const BoxDecoration(
+            //             gradient: LinearGradient(
+            //               begin: Alignment.topCenter,
+            //               end: Alignment.bottomCenter,
+            //               colors: [Colors.black12, Colors.black],
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: MediaQuery.of(context).size.height + 100),
             Skeletonizer(
               enabled: _isLoading,
@@ -258,7 +261,7 @@ class HeaderActionChip extends StatelessWidget {
           Colors.white.withValues(alpha: chip.isSelected ? 1 : 0.1),
         ),
         labelStyle: TextStyle(
-          color: chip.isSelected ? Colors.black : Colors.white,
+          // color: chip.isSelected ? Colors.black : Colors.white,
           fontWeight: FontWeight.bold,
         ),
         surfaceTintColor: Colors.transparent,
