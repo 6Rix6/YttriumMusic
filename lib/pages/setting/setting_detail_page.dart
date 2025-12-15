@@ -26,7 +26,7 @@ class SettingDetailPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.all(16),
           child: Column(spacing: 12, children: items),
         ),
       ),
@@ -34,23 +34,97 @@ class SettingDetailPage extends StatelessWidget {
   }
 }
 
-class SettingGroup extends StatelessWidget {
+// class SettingGroup extends StatelessWidget {
+//   final String title;
+//   final String description;
+//   final IconData icon;
+//   final List<SettingGroupItem> items;
+//   const SettingGroup({
+//     super.key,
+//     required this.title,
+//     required this.description,
+//     required this.icon,
+//     required this.items,
+//   });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final theme = Theme.of(context);
+//     final surfaceColor = theme.colorScheme.surfaceContainer;
+//     return Container(
+//       decoration: BoxDecoration(
+//         color: surfaceColor,
+//         borderRadius: BorderRadius.circular(16),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.grey.withValues(alpha: 0.1),
+//             blurRadius: 16,
+//             offset: Offset(0, 8),
+//             spreadRadius: 0,
+//           ),
+//         ],
+//       ),
+//       child: Column(
+//         children: [
+//           // header
+//           Container(
+//             decoration: BoxDecoration(
+//               color: theme.colorScheme.secondaryContainer,
+//               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+//             ),
+//             child: ListTile(
+//               title: Text(title),
+//               subtitle: Text(description),
+//               subtitleTextStyle: TextStyle(color: theme.hintColor),
+//               leading: Icon(icon),
+//               trailing: Icon(LucideIcons.chevronDown),
+//             ),
+//           ),
+//           // body
+//           Column(children: items),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
+class SettingGroup extends StatefulWidget {
   final String title;
   final String description;
   final IconData icon;
   final List<SettingGroupItem> items;
+  // options
+  final bool isExpansionInteractive;
+  final bool initialExpanded;
+
   const SettingGroup({
     super.key,
     required this.title,
     required this.description,
     required this.icon,
     required this.items,
+    this.isExpansionInteractive = true,
+    this.initialExpanded = true,
   });
+
+  @override
+  State<SettingGroup> createState() => _SettingGroupState();
+}
+
+class _SettingGroupState extends State<SettingGroup> {
+  bool _isExpanded = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _isExpanded = widget.initialExpanded;
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final surfaceColor = theme.colorScheme.surfaceContainer;
+
     return Container(
       decoration: BoxDecoration(
         color: surfaceColor,
@@ -59,29 +133,57 @@ class SettingGroup extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.withValues(alpha: 0.1),
             blurRadius: 16,
-            offset: Offset(0, 8),
+            offset: const Offset(0, 8),
             spreadRadius: 0,
           ),
         ],
       ),
+      clipBehavior: Clip.antiAlias,
       child: Column(
         children: [
-          // header
-          Container(
-            decoration: BoxDecoration(
-              color: theme.colorScheme.secondaryContainer,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            child: ListTile(
-              title: Text(title),
-              subtitle: Text(description),
-              subtitleTextStyle: TextStyle(color: theme.hintColor),
-              leading: Icon(icon),
-              trailing: Icon(LucideIcons.chevronDown),
+          // Header
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                if (!widget.isExpansionInteractive) return;
+                _isExpanded = !_isExpanded;
+              });
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.secondaryContainer,
+                borderRadius: BorderRadius.vertical(
+                  top: const Radius.circular(16),
+                  bottom: Radius.circular(_isExpanded ? 0 : 16),
+                ),
+              ),
+              child: ListTile(
+                title: Text(widget.title),
+                subtitle: Text(widget.description),
+                subtitleTextStyle: TextStyle(color: theme.hintColor),
+                leading: Icon(widget.icon),
+                trailing: AnimatedRotation(
+                  turns: _isExpanded ? 0.5 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: const Icon(LucideIcons.chevronDown),
+                ),
+              ),
             ),
           ),
-          // body
-          Column(children: items),
+
+          // Body
+          AnimatedSize(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              width: double.infinity,
+              child: _isExpanded
+                  ? Column(children: widget.items)
+                  : const SizedBox.shrink(),
+            ),
+          ),
         ],
       ),
     );

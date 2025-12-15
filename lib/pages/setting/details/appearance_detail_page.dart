@@ -100,34 +100,6 @@ class AppearanceDetailPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // onTap: () => Get.dialog(
-                //   SimpleDialog(
-                //     title: const Text('Theme Mode'),
-                //     children: [
-                //       SimpleDialogOption(
-                //         onPressed: () {
-                //           settingsController.themeMode = ThemeMode.system;
-                //           Get.back();
-                //         },
-                //         child: const Text('System'),
-                //       ),
-                //       SimpleDialogOption(
-                //         onPressed: () {
-                //           settingsController.themeMode = ThemeMode.light;
-                //           Get.back();
-                //         },
-                //         child: const Text('Light'),
-                //       ),
-                //       SimpleDialogOption(
-                //         onPressed: () {
-                //           settingsController.themeMode = ThemeMode.dark;
-                //           Get.back();
-                //         },
-                //         child: const Text('Dark'),
-                //       ),
-                //     ],
-                //   ),
-                // ),
               ),
               SettingGroupItem(
                 icon: LucideIcons.palette,
