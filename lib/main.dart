@@ -9,6 +9,7 @@ import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/common/services/audio_handler.dart';
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
+import 'package:yttrium_music/common/controllers/settings_controller.dart';
 import 'package:yttrium_music/common/consts/color_schems.dart';
 import 'package:yttrium_music/common/widgets/player/player.dart';
 import 'package:yttrium_music/common/widgets/player/wallpaper.dart';
@@ -22,8 +23,12 @@ void main() async {
 
   // init services and controllers
   final storageService = await Get.putAsync(() => StorageService().init());
-  final historyController = Get.put(
+  final authController = Get.put(
     AuthController(storageService: storageService),
+  );
+  // ignore: unused_local_variable
+  final settingsController = Get.put(
+    SettingsController(storageService: storageService),
   );
   final audioHandler = await Get.putAsync(() => initAudioService());
   final audioPlayerController = Get.put(
@@ -31,7 +36,7 @@ void main() async {
   );
   await Get.putAsync(
     () => YoutubeService(
-      authController: historyController,
+      authController: authController,
       audioPlayerController: audioPlayerController,
     ).init(),
   );
@@ -52,12 +57,15 @@ class YoutubeMusic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'YouTube Music',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
-      home: const MainPage(),
+    final settingsController = Get.find<SettingsController>();
+    return Obx(
+      () => GetMaterialApp(
+        title: 'YouTube Music',
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: settingsController.themeMode,
+        home: const MainPage(),
+      ),
     );
   }
 }

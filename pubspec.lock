@@ -105,6 +105,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.8"
+  dart_extensions:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "8a19d536a66ea7cce47e8681c67d16b06b5ce1a3"
+      url: "https://github.com/MSOB7YY/dart_extensions"
+    source: git
+    version: "1.3.7"
   dio:
     dependency: transitive
     description:
@@ -287,6 +296,14 @@ packages:
       relative: true
     source: path
     version: "0.1.0"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: "3df61194eb431efc39c4ceba583b95633a403f46c9fd341e550ce0bfa50e9aa5"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.20.2"
   js:
     dependency: transitive
     description:
@@ -375,6 +392,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.6.2"
+  lucide_icons_flutter:
+    dependency: "direct main"
+    description:
+      name: lucide_icons_flutter
+      sha256: aaadab3b503d2cc4eb971661511c6053bfe7d52742ba46f551d508494822a0fa
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.8"
   matcher:
     dependency: transitive
     description:
@@ -415,6 +440,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
+  nampack:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "1acf6a8e82c64277bb852cf4cbac13c7846e7ddb"
+      url: "https://github.com/MSOB7YY/nampack"
+    source: git
+    version: "0.9.96"
   path:
     dependency: transitive
     description:
@@ -684,6 +718,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.4"
+  string_clean_utils:
+    dependency: transitive
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "6fa242d2062c4df8feaf8aa04fe1ba4c1b1499b7"
+      url: "https://github.com/namidaco/string_clean_utils"
+    source: git
+    version: "1.0.3"
   string_scanner:
     dependency: transitive
     description:

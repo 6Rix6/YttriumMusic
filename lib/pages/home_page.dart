@@ -6,8 +6,8 @@ import 'package:skeletonizer/skeletonizer.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/consts/dummies.dart';
-import 'package:yttrium_music/pages/login_page.dart';
 import 'package:yttrium_music/common/widgets/section_widget.dart';
+import 'package:yttrium_music/pages/setting/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -133,55 +133,25 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {},
                   ),
                   Obx(() {
-                    if (authController.isLoggedIn.value) {
-                      return IconButton(
-                        icon: Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                authController.accountPhotoUrl.value,
+                    final icon = authController.isLoggedIn.value
+                        ? Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  authController.accountPhotoUrl.value,
+                                ),
+                                fit: BoxFit.cover,
                               ),
-                              fit: BoxFit.cover,
                             ),
-                          ),
-                        ),
-                        onPressed: () {
-                          youtubeController.logout();
-                        },
-                      );
-                    } else {
-                      return IconButton(
-                        icon: const Icon(CupertinoIcons.person),
-                        onPressed: () async {
-                          final result =
-                              await Get.to(() => const LoginPage())
-                                  as LoginResult?;
-                          try {
-                            if (result != null) {
-                              await youtubeController.login(
-                                result.innerTubeCookie,
-                              );
-                              Get.snackbar(
-                                "Success",
-                                "Logged in successfully",
-                                snackPosition: SnackPosition.TOP,
-                              );
-                            } else {
-                              throw Exception("Login failed");
-                            }
-                          } catch (e) {
-                            Get.snackbar(
-                              "Error",
-                              e.toString(),
-                              snackPosition: SnackPosition.TOP,
-                            );
-                          }
-                        },
-                      );
-                    }
+                          )
+                        : const Icon(CupertinoIcons.person);
+                    return IconButton(
+                      icon: icon,
+                      onPressed: () => Get.to(() => const SettingPage()),
+                    );
                   }),
                 ],
                 backgroundColor: Colors.transparent,
@@ -253,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            SizedBox(height: MediaQuery.of(context).size.height),
+            SizedBox(height: MediaQuery.of(context).size.height + 100),
             Skeletonizer(
               enabled: _isLoading,
               containersColor: Colors.grey.shade800,

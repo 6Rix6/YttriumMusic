@@ -1,48 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import 'package:yttrium_music/common/controllers/count_controller.dart';
-
-class LibraryPage extends StatelessWidget {
+class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final countColtroller = Get.put(CounterController());
-    return Scaffold(
-      appBar: AppBar(title: const Text('Library Page')),
-      body: Center(
-        child: TextButton(
-          onPressed: () => Get.to(() => OtherPage()),
-          child: const Text('Go to Other Page'),
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: countColtroller.increment,
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+  State<LibraryPage> createState() => _LibraryPageState();
 }
 
-class OtherPage extends StatelessWidget {
-  const OtherPage({super.key});
+class _LibraryPageState extends State<LibraryPage> {
+  String _currentText = "Hello";
+
+  void _switchText() {
+    setState(() {
+      _currentText = _currentText == "Hello" ? "World" : "Hello";
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final countColtroller = Get.find<CounterController>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Other Page'),
-        leading: TextButton(
-          onPressed: () => Get.back(),
-          child: const Icon(Icons.arrow_back),
+      appBar: AppBar(title: Text("Text Switching Animation")),
+      body: Center(
+        child: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 500),
+          child: Text(
+            _currentText,
+            // The key is essential for AnimatedSwitcher to identify a change
+            key: ValueKey<String>(_currentText),
+            style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
-      body: Center(child: Obx(() => Text(countColtroller.count.toString()))),
       floatingActionButton: FloatingActionButton(
-        onPressed: countColtroller.increment,
-        child: const Icon(Icons.add),
+        isExtended: false,
+        onPressed: _switchText,
+        child: Icon(Icons.change_circle),
       ),
     );
   }
