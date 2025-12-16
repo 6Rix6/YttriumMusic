@@ -1,3 +1,4 @@
+import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,6 +6,7 @@ import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/pages/login_page.dart';
 import 'package:yttrium_music/pages/setting/details/appearance_detail_page.dart';
+import 'package:yttrium_music/pages/setting/details/language_detail_page.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -70,7 +72,11 @@ class SettingPage extends StatelessWidget {
             _SettingPageSection(
               title: 'System',
               child: _buildMenuSection(surfaceColor, [
-                _MenuItem(CupertinoIcons.textformat, 'Language'),
+                _MenuItem(
+                  CupertinoIcons.textformat,
+                  'Language',
+                  onTap: () => Get.to(() => LanguageDetailPage()),
+                ),
                 _MenuItem(CupertinoIcons.floppy_disk, 'Storage'),
                 _MenuItem(CupertinoIcons.lock, 'Data & Privacy'),
                 _MenuItem(CupertinoIcons.info, 'About'),
@@ -179,8 +185,14 @@ class SettingPage extends StatelessWidget {
             leading: Container(
               height: 40,
               width: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
+              decoration: ShapeDecoration(
+                // borderRadius: BorderRadius.circular(12),
+                shape: SmoothRectangleBorder(
+                  borderRadius: SmoothBorderRadius(
+                    cornerRadius: 12,
+                    cornerSmoothing: .5,
+                  ),
+                ),
                 color: theme.colorScheme.secondaryContainer,
               ),
               child: Icon(item.icon, size: 24),

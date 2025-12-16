@@ -103,6 +103,7 @@ class AppearanceDetailPage extends StatelessWidget {
               ),
               SettingGroupItem(
                 icon: LucideIcons.palette,
+                roundBottom: true,
                 title: 'Dynamic Color',
                 subtitle: settingsController.enableDynamicColor.toText(),
                 trailing: Switch(

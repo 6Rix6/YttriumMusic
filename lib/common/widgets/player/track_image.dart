@@ -15,7 +15,7 @@ class TrackImage extends StatelessWidget {
     required this.cp,
     required this.p,
     this.width = 82.0,
-    this.horizontalPadding = 16.0,
+    this.horizontalPadding = 24.0,
     this.bytes,
     this.large = false,
   });

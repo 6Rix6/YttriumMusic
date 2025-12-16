@@ -31,9 +31,9 @@ class ListTileWithCheckMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     final textTheme = theme.textTheme;
-    // final tileAlpha = context.isDarkMode ? 5 : 20;
-    final tileAlpha = 5;
+    final tileAlpha = isDark ? 20 : 10;
     final br = BorderRadius.circular(8.0);
     final titleWidgetFinal = Padding(
       padding: EdgeInsets.symmetric(

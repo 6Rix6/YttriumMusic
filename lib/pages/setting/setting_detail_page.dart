@@ -124,6 +124,7 @@ class _SettingGroupState extends State<SettingGroup> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final surfaceColor = theme.colorScheme.surfaceContainer;
+    final isDark = theme.brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
@@ -131,8 +132,8 @@ class _SettingGroupState extends State<SettingGroup> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
-            blurRadius: 16,
+            color: theme.shadowColor.withValues(alpha: isDark ? 0.2 : 0.05),
+            blurRadius: 32,
             offset: const Offset(0, 8),
             spreadRadius: 0,
           ),
@@ -177,8 +178,8 @@ class _SettingGroupState extends State<SettingGroup> {
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             alignment: Alignment.topCenter,
-            child: SizedBox(
-              width: double.infinity,
+            child: Material(
+              color: theme.colorScheme.surfaceContainer,
               child: _isExpanded
                   ? Column(children: widget.items)
                   : const SizedBox.shrink(),
@@ -196,6 +197,7 @@ class SettingGroupItem extends StatelessWidget {
   final String? subtitle;
   final Widget? trailing;
   final VoidCallback? onTap;
+  final bool roundBottom;
 
   const SettingGroupItem({
     super.key,
@@ -204,6 +206,7 @@ class SettingGroupItem extends StatelessWidget {
     this.subtitle,
     this.trailing,
     this.onTap,
+    this.roundBottom = false,
   });
 
   @override
@@ -217,6 +220,11 @@ class SettingGroupItem extends StatelessWidget {
       subtitleTextStyle: TextStyle(color: theme.hintColor),
       trailing: trailing,
       onTap: onTap,
+      shape: roundBottom
+          ? const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(16)),
+            )
+          : null,
     );
   }
 }
