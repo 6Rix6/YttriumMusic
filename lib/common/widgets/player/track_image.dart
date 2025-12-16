@@ -15,6 +15,7 @@ class TrackImage extends StatelessWidget {
     required this.cp,
     required this.p,
     this.width = 82.0,
+    this.horizontalPadding = 16.0,
     this.bytes,
     this.large = false,
   });
@@ -23,6 +24,7 @@ class TrackImage extends StatelessWidget {
   final bool large;
 
   final double width;
+  final double horizontalPadding;
 
   final double bottomOffset;
   final double maxOffset;
@@ -38,15 +40,18 @@ class TrackImage extends StatelessWidget {
       cornerRadius: radius,
       cornerSmoothing: 1.0,
     );
-    final size = rangeProgress(a: width, b: screenSize.width - 84.0, c: cp);
-    // const imgSize = Size(400, 400);
+    final size = rangeProgress(
+      a: width,
+      b: screenSize.width - horizontalPadding * 2,
+      c: cp,
+    );
 
     return Transform.translate(
       offset: Offset(0, bottomOffset + (-maxOffset / 2.15 * p.clamp(0, 2))),
       child: Padding(
         padding: EdgeInsets.all(
           12.0 * (1 - cp),
-        ).add(EdgeInsets.only(left: 42.0 * cp)),
+        ).add(EdgeInsets.only(left: horizontalPadding * cp)),
         child: Align(
           alignment: Alignment.bottomLeft,
           child: SizedBox(

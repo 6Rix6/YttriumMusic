@@ -15,17 +15,13 @@ import 'package:animations/animations.dart';
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/utils/duration_format.dart';
-// import 'package:kikoeru/widgets/common/work_cover_image.dart';
-// import 'package:provider/provider.dart';
-// import 'package:kikoeru/core/providers/audio_player_provider.dart';
-// import 'package:kikoeru/core/providers/will_pop_provider.dart';
 import 'track_image.dart';
 import 'track_info.dart';
-// import 'queue/queue_view.dart';
 import 'package:yttrium_music/common/utils/player_ui_utils.dart';
 
 enum PlayerState { mini, expanded, queue }
@@ -53,6 +49,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
   static const actuationOffset = 100.0; // min distance to snap
   static const deadSpace = 100.0; // Distance from bottom to ignore swipes
   static const bottomOffsetClosed = kBottomNavigationBarHeight;
+  static const horizontalPadding = 6.0;
 
   /// Horizontal track switching
   double sOffset = 0.0;
@@ -222,7 +219,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final audioPlayer = Get.find<AudioPlayerController>();
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
 
     return Listener(
       onPointerDown: (event) {
@@ -335,9 +333,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
         child: AnimatedBuilder(
           animation: widget.animation,
           builder: (context, child) {
-            final Color onSecondary = Theme.of(
-              context,
-            ).colorScheme.onSecondaryContainer;
+            final Color onSecondary = theme.colorScheme.onSecondaryContainer;
 
             final double progressValue = widget.animation.value;
             final double clampedProgressValue = progressValue.clamp(0, 1);
@@ -414,7 +410,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                           child: Padding(
                             padding: EdgeInsets.symmetric(
                               horizontal:
-                                  12 *
+                                  horizontalPadding *
                                   (1 - clampedProgressValue * 10 + 9).clamp(
                                     0,
                                     1,
@@ -429,9 +425,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                               ),
                               width: double.infinity,
                               decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).scaffoldBackgroundColor,
+                                color: theme.scaffoldBackgroundColor,
                                 borderRadius: borderRadius,
                                 boxShadow: [
                                   BoxShadow(
@@ -443,8 +437,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                 ],
                                 border: Border.all(
                                   color: isDark
-                                      ? Colors.white.withAlpha(50)
-                                      : Colors.grey.withAlpha(50),
+                                      ? theme.dividerColor.withAlpha(50)
+                                      : theme.dividerColor.withAlpha(50),
                                   width: 1,
                                 ),
                               ),
@@ -455,14 +449,14 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [
-                                      Theme.of(context).cardColor.withValues(
+                                      theme.cardColor.withValues(
                                         alpha: rangeProgress(
                                           a: 1.0,
                                           b: .9,
                                           c: inverseClampedProgressValue,
                                         ),
                                       ),
-                                      Theme.of(context).cardColor.withValues(
+                                      theme.cardColor.withValues(
                                         alpha: rangeProgress(
                                           a: .0,
                                           b: .9,
@@ -569,9 +563,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                     icon: Container(
                                       padding: const EdgeInsets.all(4.0),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary
+                                        color: theme.colorScheme.secondary
                                             .withValues(alpha: .2),
                                         shape: BoxShape.circle,
                                       ),
@@ -714,7 +706,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                   ),
                                 ),
                                 child: Theme(
-                                  data: Theme.of(context).copyWith(
+                                  data: theme.copyWith(
                                     floatingActionButtonTheme:
                                         FloatingActionButtonThemeData(
                                           sizeConstraints: BoxConstraints.tight(
@@ -755,9 +747,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                         child: Center(
                                           child:
                                               LoadingAnimationWidget.staggeredDotsWave(
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.secondary,
+                                                color:
+                                                    theme.colorScheme.secondary,
                                                 size: 42.0,
                                               ),
                                         ),
@@ -780,9 +771,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                           child: Icon(
                                             Icons.warning,
                                             size: 42.0,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.error,
+                                            color: theme.colorScheme.error,
                                           ),
                                         ),
                                       );
@@ -809,9 +798,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
 
                                         return Container(
                                           decoration: BoxDecoration(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.primary,
+                                            color: theme.colorScheme.primary,
                                             borderRadius: BorderRadius.circular(
                                               16.0,
                                             ),
@@ -821,12 +808,10 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                               progress *
                                                   (1 -
                                                       reverseClampedProgressValue),
-                                              indicatorColor: Theme.of(
-                                                context,
-                                              ).colorScheme.onPrimary,
-                                              backgroundColor: Theme.of(
-                                                context,
-                                              ).colorScheme.primary,
+                                              indicatorColor:
+                                                  theme.colorScheme.onPrimary,
+                                              backgroundColor:
+                                                  theme.colorScheme.primary,
                                             ),
                                             child: FloatingActionButton(
                                               backgroundColor:
@@ -838,6 +823,8 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                               child: AnimatedIcon(
                                                 progress: playPauseAnim,
                                                 icon: AnimatedIcons.play_pause,
+                                                color:
+                                                    theme.colorScheme.onPrimary,
                                               ),
                                             ),
                                           ),
@@ -944,9 +931,7 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                               child: Obx(
                                 () => TrackImage(
                                   image: Container(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.secondary,
+                                    color: theme.colorScheme.secondary,
                                     child: Stack(
                                       children: [
                                         Container(
@@ -966,22 +951,6 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                             ),
                                           ),
                                         ),
-                                        // WorkCoverImage(
-                                        //   uri:
-                                        //       snapshot.data?.artUri
-                                        //           .toString() ??
-                                        //       "",
-                                        //   size: Size(400, 400),
-                                        //   blurRadius: 10 * (y * 2),
-                                        //   placeholderIconSize: 30 * y,
-                                        // ),
-                                        // if (progressValue == 1)
-                                        //   Container(
-                                        //     height: 400,
-                                        //     width: 400,
-                                        //     color: Colors.transparent,
-                                        //     child: OverlayControls(),
-                                        //   ),
                                       ],
                                     ),
                                   ),
@@ -1129,15 +1098,14 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
                                     Container(
                                       padding: const EdgeInsets.all(6.0),
                                       decoration: BoxDecoration(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.secondary,
+                                        color: theme
+                                            .colorScheme
+                                            .secondaryContainer,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Icon(
-                                        Icons.headphones,
+                                        LucideIcons.headphones,
                                         size: 18.0,
-                                        color: onSecondary,
                                       ),
                                     ),
                                     Padding(
@@ -1316,6 +1284,7 @@ class _ExSeekBarState extends State<ExSeekBar> {
   @override
   Widget build(BuildContext context) {
     final value = _dragValue ?? widget.position.inSeconds.toDouble();
+    final theme = Theme.of(context);
 
     return Column(
       children: [
@@ -1335,8 +1304,8 @@ class _ExSeekBarState extends State<ExSeekBar> {
             });
             widget.onChangeEnd?.call(Duration(seconds: newValue.toInt()));
           },
-          activeColor: Theme.of(context).colorScheme.primary,
-          inactiveColor: Theme.of(context).colorScheme.secondary,
+          activeColor: theme.colorScheme.primary,
+          inactiveColor: theme.colorScheme.secondary,
         ),
       ],
     );
