@@ -1,0 +1,39 @@
+general:
+  success: Success
+  error: Error
+  failed: Failed
+  cancel: Cancel
+  ok: OK
+  enable: Enable
+  enabled: Enabled
+  disable: Disable
+  disabled: Disabled
+setting:
+  title: Setting
+  account:
+    title: Account
+    signIn: Sign In
+    signOut: Sign Out
+    signInSuccess: Signed in successfully
+    signOutSuccess: Signed out successfully
+    signInFailed: Failed to sign in
+    google:
+      description: Sign in with Google account
+  iface:
+    title: Interface
+    appearance:
+      title: Appearance
+      theme:
+        title: Theme
+        description: Customize the look and feel.
+        themeMode:
+          title: Theme Mode
+          light: Light
+          dark: Dark
+          system: System
+        dynamicColor:
+          title: Dynamic Color
+    notifications:
+      title: Notifications
+    displayMode:
+      title: Display Mode

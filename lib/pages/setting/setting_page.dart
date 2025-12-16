@@ -7,6 +7,7 @@ import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/pages/login_page.dart';
 import 'package:yttrium_music/pages/setting/details/appearance_detail_page.dart';
 import 'package:yttrium_music/pages/setting/details/language_detail_page.dart';
+import 'package:yttrium_music/i18n/translations.g.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -25,7 +26,7 @@ class SettingPage extends StatelessWidget {
             Get.back();
           },
         ),
-        title: const Text('Settings'),
+        title: Text(t.setting.title),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
@@ -39,24 +40,27 @@ class SettingPage extends StatelessWidget {
           spacing: 12,
           children: [
             _SettingPageSection(
-              title: 'Account',
+              title: t.setting.account.title,
               child: _buildAccountCard(surfaceColor),
             ),
 
             _SettingPageSection(
-              title: 'Interface',
+              title: t.setting.iface.title,
               child: _buildMenuSection(surfaceColor, [
                 _MenuItem(
                   CupertinoIcons.color_filter,
-                  'Appearance',
+                  t.setting.iface.appearance.title,
                   onTap: () => Get.to(() => const AppearanceDetailPage()),
                 ),
                 _MenuItem(
                   CupertinoIcons.bell,
-                  'Notifications',
+                  t.setting.iface.notifications.title,
                   trailingText: '1',
                 ),
-                _MenuItem(CupertinoIcons.square_list, 'Display Mode'),
+                _MenuItem(
+                  CupertinoIcons.square_list,
+                  t.setting.iface.displayMode.title,
+                ),
               ]),
             ),
 
@@ -117,28 +121,32 @@ class SettingPage extends StatelessWidget {
               if (result != null) {
                 await youtubeService.login(result.innerTubeCookie);
                 Get.snackbar(
-                  "Success",
-                  "Logged in successfully",
+                  t.general.success,
+                  t.setting.account.signInSuccess,
                   snackPosition: SnackPosition.TOP,
                 );
               } else {
-                throw Exception("Login failed");
+                throw Exception(t.setting.account.signInFailed);
               }
             } catch (e) {
               Get.snackbar(
-                "Error",
+                t.general.error,
                 e.toString(),
                 snackPosition: SnackPosition.TOP,
               );
             }
           }
         },
-        child: Text(isLoggedIn ? 'Sign out' : 'Sign in'),
+        child: Text(
+          isLoggedIn ? t.setting.account.signOut : t.setting.account.signIn,
+        ),
       );
-      final title = isLoggedIn ? authController.accountName.value : 'Sign in';
+      final title = isLoggedIn
+          ? authController.accountName.value
+          : t.setting.account.signIn;
       final subtitle = isLoggedIn
           ? authController.accountHandle.value
-          : 'Sign in with your Google account';
+          : t.setting.account.google.description;
       return Material(
         color: surfaceColor,
         borderRadius: BorderRadius.circular(16),

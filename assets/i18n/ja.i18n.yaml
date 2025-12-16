@@ -1,0 +1,39 @@
+general:
+  success: 成功
+  error: エラー
+  failed: 失敗
+  cancel: キャンセル
+  ok: OK
+  enable: 有効化
+  enabled: 有効
+  disable: 無効化
+  disabled: 無効
+setting:
+  title: 設定
+  account:
+    title: アカウント
+    signIn: サインイン
+    signOut: サインアウト
+    signInSuccess: サインインに成功しました
+    signOutSuccess: サインアウトに成功しました
+    signInFailed: サインインに失敗しました
+    google:
+      description: Googleアカウントでサインイン
+  iface:
+    title: インターフェース
+    appearance:
+      title: 外観
+      theme:
+        title: テーマ
+        description: アプリの外観をカスタマイズします。
+        themeMode:
+          title: テーマモード
+          light: ライト
+          dark: ダーク
+          system: システム
+        dynamicColor:
+          title: ダイナミックカラー
+    notifications:
+      title: 通知
+    displayMode:
+      title: 表示モード

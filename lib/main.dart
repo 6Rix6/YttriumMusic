@@ -19,8 +19,11 @@ import 'package:yttrium_music/pages/home_page.dart';
 import 'package:yttrium_music/pages/library_page.dart';
 import 'package:yttrium_music/pages/search_page.dart';
 
+import 'package:yttrium_music/i18n/translations.g.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.setLocaleRaw("ja");
 
   // init services and controllers
   final storageService = await Get.putAsync(() => StorageService().init());

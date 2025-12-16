@@ -1,0 +1,4 @@
+input_file_pattern: .i18n.yaml
+input_directory: assets/i18n
+output_directory: lib/i18n
+output_file_name: translations.g.dart

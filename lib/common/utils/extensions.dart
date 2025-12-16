@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
+import 'package:yttrium_music/i18n/translations.g.dart';
 
 extension BoolToString on bool {
   String toText() {
-    return this ? 'Enabled' : 'Disabled';
+    return this ? t.general.enabled : t.general.disabled;
+  }
+}
+
+extension ThemeModeToString on ThemeMode {
+  String toText() {
+    switch (this) {
+      case ThemeMode.system:
+        return t.setting.iface.appearance.theme.themeMode.system;
+      case ThemeMode.light:
+        return t.setting.iface.appearance.theme.themeMode.light;
+      case ThemeMode.dark:
+        return t.setting.iface.appearance.theme.themeMode.dark;
+    }
   }
 }
 
