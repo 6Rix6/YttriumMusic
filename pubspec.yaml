@@ -41,6 +41,10 @@ dependencies:
     git:
       url: https://github.com/MSOB7YY/nampack
 
+  # i18n
+  slang: ^4.11.1
+  slang_flutter: ^4.11.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
