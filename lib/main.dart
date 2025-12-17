@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
@@ -12,12 +13,15 @@ import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/controllers/settings_controller.dart';
 import 'package:yttrium_music/common/controllers/theme_controller.dart';
+import 'package:yttrium_music/common/controllers/youtube_search_controller.dart';
+
 import 'package:yttrium_music/common/widgets/player/player.dart';
 import 'package:yttrium_music/common/widgets/player/wallpaper.dart';
 
 import 'package:yttrium_music/pages/home_page.dart';
 import 'package:yttrium_music/pages/library_page.dart';
 import 'package:yttrium_music/pages/search_page.dart';
+import 'package:yttrium_music/pages/setting/setting_page.dart';
 
 import 'package:yttrium_music/i18n/translations.g.dart';
 
@@ -47,6 +51,7 @@ void main() async {
       settingsController: settingsController,
     ).init(),
   );
+  Get.put(YoutubeSearchController());
 
   // set locale
   LocaleSettings.setLocaleRaw(settingsController.language.code);
@@ -131,14 +136,172 @@ class _MainPageState extends State<MainPage>
     final theme = Theme.of(context);
     final audioPlayer = Get.find<AudioPlayerController>();
     final playerChild = Player(animation: _animationController);
-    return Scaffold(
-      extendBody: true,
-      resizeToAvoidBottomInset: true,
-      body: Stack(
+    final ySearchController = Get.find<YoutubeSearchController>();
+    final authController = Get.find<AuthController>();
+    return Material(
+      child: Stack(
         children: [
-          IndexedStack(
-            index: _currentIndex,
-            children: const <Widget>[HomePage(), SearchPage(), LibraryPage()],
+          SafeArea(
+            bottom: false,
+            child: Scaffold(
+              extendBody: true,
+              resizeToAvoidBottomInset: false,
+              appBar: AppBar(
+                title: Row(
+                  spacing: 12,
+                  children: [
+                    const Icon(
+                      CupertinoIcons.arrowtriangle_right_circle_fill,
+                      size: 28,
+                    ),
+                    const Text(
+                      'Music',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+                actions: [
+                  IconButton(
+                    icon: const Icon(CupertinoIcons.search),
+                    onPressed: () {
+                      ySearchController.isEditing.toggle();
+                    },
+                  ),
+                  Obx(() {
+                    final icon = authController.isLoggedIn.value
+                        ? Container(
+                            width: 24,
+                            height: 24,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                  authController.accountPhotoUrl.value,
+                                ),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          )
+                        : const Icon(CupertinoIcons.person);
+                    return IconButton(
+                      icon: icon,
+                      onPressed: () => Get.to(() => const SettingPage()),
+                    );
+                  }),
+                ],
+                backgroundColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                elevation: 0,
+                scrolledUnderElevation: 0,
+              ),
+              body: Stack(
+                children: [
+                  IndexedStack(
+                    index: _currentIndex,
+                    children: const <Widget>[
+                      HomePage(),
+                      SearchPage(),
+                      LibraryPage(),
+                    ],
+                  ),
+
+                  // Search Screen
+                  // Obx(
+                  //   () => Visibility(
+                  //     visible: ySearchController.isEditing.value,
+                  //     child: AnimatedOpacity(
+                  //       opacity: ySearchController.isEditing.value ? 1.0 : 0.0,
+                  //       duration: const Duration(milliseconds: 500),
+                  //       child: Positioned.fill(
+                  //         child: Container(
+                  //           color: theme.scaffoldBackgroundColor,
+                  //           child: const Center(child: CircularProgressIndicator()),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // Obx(
+                  //   () => AnimatedOpacity(
+                  //     opacity: ySearchController.isEditing.value ? 1.0 : 0.0,
+                  //     duration: const Duration(milliseconds: 100),
+                  //     child: Positioned.fill(
+                  //       child: Container(
+                  //         color: theme.scaffoldBackgroundColor,
+                  //         child: const Center(child: CircularProgressIndicator()),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  Positioned.fill(
+                    child: Obx(
+                      () => AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 200),
+                        child: ySearchController.isEditing.value
+                            ? Container(
+                                color: theme.scaffoldBackgroundColor,
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              bottomNavigationBar: AnimatedBuilder(
+                animation: _animationController,
+                builder: (context, _) {
+                  return Transform.translate(
+                    offset: Offset(
+                      0,
+                      (kBottomNavigationBarHeight *
+                              _animationController.value *
+                              2)
+                          .withMinimum(0),
+                    ),
+                    child: NavigationBarTheme(
+                      data: NavigationBarThemeData(
+                        backgroundColor:
+                            theme.navigationBarTheme.backgroundColor,
+                        indicatorColor: Color.alphaBlend(
+                          theme.colorScheme.primary.withAlpha(20),
+                          theme.colorScheme.secondaryContainer,
+                        ),
+                      ),
+                      child: NavigationBar(
+                        maintainBottomViewPadding: true,
+                        onDestinationSelected: (int index) {
+                          setState(() {
+                            _currentIndex = index;
+                          });
+                        },
+                        height: 64,
+                        selectedIndex: _currentIndex,
+                        labelBehavior:
+                            NavigationDestinationLabelBehavior.onlyShowSelected,
+                        destinations: <Widget>[
+                          NavigationDestination(
+                            selectedIcon: Icon(Icons.home),
+                            icon: Icon(Icons.home_outlined),
+                            label: t.navigation.home,
+                          ),
+                          NavigationDestination(
+                            icon: Icon(Icons.search),
+                            label: t.navigation.search,
+                          ),
+                          NavigationDestination(
+                            icon: Icon(Icons.library_music),
+                            label: t.navigation.library,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ),
 
           Positioned.fill(
@@ -193,58 +356,10 @@ class _MainPageState extends State<MainPage>
             return AnimatedOpacity(
               duration: const Duration(milliseconds: 500),
               opacity: hasTrack ? 1 : 0,
-              child: hasTrack ? playerChild : const SizedBox(),
+              child: hasTrack ? playerChild : null,
             );
           }),
         ],
-      ),
-      bottomNavigationBar: AnimatedBuilder(
-        animation: _animationController,
-        builder: (context, _) {
-          return Transform.translate(
-            offset: Offset(
-              0,
-              (kBottomNavigationBarHeight * _animationController.value * 2)
-                  .withMinimum(0),
-            ),
-            child: NavigationBarTheme(
-              data: NavigationBarThemeData(
-                backgroundColor: theme.navigationBarTheme.backgroundColor,
-                indicatorColor: Color.alphaBlend(
-                  theme.colorScheme.primary.withAlpha(20),
-                  theme.colorScheme.secondaryContainer,
-                ),
-              ),
-              child: NavigationBar(
-                maintainBottomViewPadding: true,
-                onDestinationSelected: (int index) {
-                  setState(() {
-                    _currentIndex = index;
-                  });
-                },
-                height: 64,
-                selectedIndex: _currentIndex,
-                labelBehavior:
-                    NavigationDestinationLabelBehavior.onlyShowSelected,
-                destinations: <Widget>[
-                  NavigationDestination(
-                    selectedIcon: Icon(Icons.home),
-                    icon: Icon(Icons.home_outlined),
-                    label: t.navigation.home,
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.search),
-                    label: t.navigation.search,
-                  ),
-                  NavigationDestination(
-                    icon: Icon(Icons.library_music),
-                    label: t.navigation.library,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
       ),
     );
   }

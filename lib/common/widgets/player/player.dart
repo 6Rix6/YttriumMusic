@@ -396,11 +396,13 @@ class _PlayerState extends State<Player> with TickerProviderStateMixin {
             return MediaQuery.removePadding(
               context: context,
               removeBottom: true,
+              removeTop: false,
               child: Stack(
                 children: [
                   /// Player Body
                   Container(
                     color: progressValue > 0 ? Colors.transparent : null,
+                    // color: Colors.red,
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Transform.translate(
