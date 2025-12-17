@@ -49,7 +49,7 @@ class AppearanceDetailPage extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () => modal.closeDialog(),
-                        child: const Text('Cancel'),
+                        child: Text(t.general.cancel),
                       ),
                     ],
                     child: Padding(

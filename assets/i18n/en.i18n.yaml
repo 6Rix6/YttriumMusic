@@ -37,3 +37,14 @@ setting:
       title: Notifications
     displayMode:
       title: Display Mode
+  system:
+    title: System
+    language:
+      title: Language
+      locale:
+        title: Locale
+        description: Select your language and country.
+        language:
+          title: Language
+        country:
+          title: Country

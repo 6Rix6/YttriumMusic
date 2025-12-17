@@ -37,3 +37,14 @@ setting:
       title: 通知
     displayMode:
       title: 表示モード
+  system:
+    title: システム
+    language:
+      title: 言語
+      locale:
+        title: ロケール
+        description: 言語と国の選択
+        language:
+          title: 言語
+        country:
+          title: 国

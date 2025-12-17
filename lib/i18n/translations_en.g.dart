@@ -93,6 +93,7 @@ class TranslationsSettingEn {
 
 	late final TranslationsSettingAccountEn account = TranslationsSettingAccountEn._(_root);
 	late final TranslationsSettingIfaceEn iface = TranslationsSettingIfaceEn._(_root);
+	late final TranslationsSettingSystemEn system = TranslationsSettingSystemEn._(_root);
 }
 
 // Path: setting.account
@@ -138,6 +139,20 @@ class TranslationsSettingIfaceEn {
 	late final TranslationsSettingIfaceAppearanceEn appearance = TranslationsSettingIfaceAppearanceEn._(_root);
 	late final TranslationsSettingIfaceNotificationsEn notifications = TranslationsSettingIfaceNotificationsEn._(_root);
 	late final TranslationsSettingIfaceDisplayModeEn displayMode = TranslationsSettingIfaceDisplayModeEn._(_root);
+}
+
+// Path: setting.system
+class TranslationsSettingSystemEn {
+	TranslationsSettingSystemEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'System'
+	String get title => 'System';
+
+	late final TranslationsSettingSystemLanguageEn language = TranslationsSettingSystemLanguageEn._(_root);
 }
 
 // Path: setting.account.google
@@ -190,6 +205,20 @@ class TranslationsSettingIfaceDisplayModeEn {
 	String get title => 'Display Mode';
 }
 
+// Path: setting.system.language
+class TranslationsSettingSystemLanguageEn {
+	TranslationsSettingSystemLanguageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Language'
+	String get title => 'Language';
+
+	late final TranslationsSettingSystemLanguageLocaleEn locale = TranslationsSettingSystemLanguageLocaleEn._(_root);
+}
+
 // Path: setting.iface.appearance.theme
 class TranslationsSettingIfaceAppearanceThemeEn {
 	TranslationsSettingIfaceAppearanceThemeEn._(this._root);
@@ -206,6 +235,24 @@ class TranslationsSettingIfaceAppearanceThemeEn {
 
 	late final TranslationsSettingIfaceAppearanceThemeThemeModeEn themeMode = TranslationsSettingIfaceAppearanceThemeThemeModeEn._(_root);
 	late final TranslationsSettingIfaceAppearanceThemeDynamicColorEn dynamicColor = TranslationsSettingIfaceAppearanceThemeDynamicColorEn._(_root);
+}
+
+// Path: setting.system.language.locale
+class TranslationsSettingSystemLanguageLocaleEn {
+	TranslationsSettingSystemLanguageLocaleEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Locale'
+	String get title => 'Locale';
+
+	/// en: 'Select your language and country.'
+	String get description => 'Select your language and country.';
+
+	late final TranslationsSettingSystemLanguageLocaleLanguageEn language = TranslationsSettingSystemLanguageLocaleLanguageEn._(_root);
+	late final TranslationsSettingSystemLanguageLocaleCountryEn country = TranslationsSettingSystemLanguageLocaleCountryEn._(_root);
 }
 
 // Path: setting.iface.appearance.theme.themeMode
@@ -239,6 +286,30 @@ class TranslationsSettingIfaceAppearanceThemeDynamicColorEn {
 
 	/// en: 'Dynamic Color'
 	String get title => 'Dynamic Color';
+}
+
+// Path: setting.system.language.locale.language
+class TranslationsSettingSystemLanguageLocaleLanguageEn {
+	TranslationsSettingSystemLanguageLocaleLanguageEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Language'
+	String get title => 'Language';
+}
+
+// Path: setting.system.language.locale.country
+class TranslationsSettingSystemLanguageLocaleCountryEn {
+	TranslationsSettingSystemLanguageLocaleCountryEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Country'
+	String get title => 'Country';
 }
 
 /// The flat map containing all translations for locale <en>.
@@ -277,6 +348,12 @@ extension on Translations {
 			'setting.iface.appearance.theme.dynamicColor.title' => 'Dynamic Color',
 			'setting.iface.notifications.title' => 'Notifications',
 			'setting.iface.displayMode.title' => 'Display Mode',
+			'setting.system.title' => 'System',
+			'setting.system.language.title' => 'Language',
+			'setting.system.language.locale.title' => 'Locale',
+			'setting.system.language.locale.description' => 'Select your language and country.',
+			'setting.system.language.locale.language.title' => 'Language',
+			'setting.system.language.locale.country.title' => 'Country',
 			_ => null,
 		};
 	}

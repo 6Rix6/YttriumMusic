@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yttrium_music/common/services/storage_service.dart';
+import 'package:yttrium_music/common/enums/locale.dart';
 
 /// Controller for managing application settings
 /// To add a new setting:
@@ -17,18 +18,21 @@ class SettingsController extends GetxController {
   static const String _keyThemeMode = 'theme_mode';
   static const String _keyEnableDynamicColor = 'enable_dynamic_color';
   static const String _keyLanguage = 'language';
+  static const String _keyCountry = 'country';
   static const String _keyAudioQuality = 'audio_quality';
 
   // Reactive variables
   final _themeMode = ThemeMode.system.obs;
   final _enableDynamicColor = false.obs;
-  final _language = 'ja'.obs;
+  final _language = Language.en.obs;
+  final _country = Country.us.obs;
   final _audioQuality = 'high'.obs;
 
   // Getters
   ThemeMode get themeMode => _themeMode.value;
   bool get enableDynamicColor => _enableDynamicColor.value;
-  String get language => _language.value;
+  Language get language => _language.value;
+  Country get country => _country.value;
   String get audioQuality => _audioQuality.value;
 
   // Setters
@@ -42,9 +46,14 @@ class SettingsController extends GetxController {
     storageService.writeBool(_keyEnableDynamicColor, value);
   }
 
-  set language(String value) {
+  set language(Language value) {
     _language.value = value;
-    storageService.writeString(_keyLanguage, value);
+    storageService.writeString(_keyLanguage, value.code);
+  }
+
+  set country(Country value) {
+    _country.value = value;
+    storageService.writeString(_keyCountry, value.code);
   }
 
   set audioQuality(String value) {
@@ -73,9 +82,20 @@ class SettingsController extends GetxController {
     );
     _enableDynamicColor.value = enableDynamicColorStr;
 
-    final lang = storageService.readString(_keyLanguage);
-    if (lang != null) {
-      _language.value = lang;
+    final langCode = storageService.readString(_keyLanguage);
+    if (langCode != null) {
+      _language.value = Language.values.firstWhere(
+        (lang) => lang.code == langCode,
+        orElse: () => Language.en,
+      );
+    }
+
+    final countryCode = storageService.readString(_keyCountry);
+    if (countryCode != null) {
+      _country.value = Country.values.firstWhere(
+        (country) => country.code == countryCode,
+        orElse: () => Country.us,
+      );
     }
 
     final quality = storageService.readString(_keyAudioQuality);
@@ -89,7 +109,8 @@ class SettingsController extends GetxController {
   /// Reset all settings to default values
   void resetAllSettings() {
     themeMode = ThemeMode.system;
-    language = 'ja';
+    language = Language.en;
+    country = Country.us;
     audioQuality = 'high';
   }
 }

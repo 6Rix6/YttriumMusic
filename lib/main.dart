@@ -23,7 +23,6 @@ import 'package:yttrium_music/i18n/translations.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocaleSettings.setLocaleRaw("ja");
 
   // init services and controllers
   final storageService = await Get.putAsync(() => StorageService().init());
@@ -45,8 +44,12 @@ void main() async {
       authController: authController,
       audioPlayerController: audioPlayerController,
       themeController: themeController,
+      settingsController: settingsController,
     ).init(),
   );
+
+  // set locale
+  LocaleSettings.setLocaleRaw(settingsController.language.code);
 
   // request permissions
   await Permission.notification.request();

@@ -74,11 +74,11 @@ class SettingPage extends StatelessWidget {
             ),
 
             _SettingPageSection(
-              title: 'System',
+              title: t.setting.system.title,
               child: _buildMenuSection(surfaceColor, [
                 _MenuItem(
                   CupertinoIcons.textformat,
-                  'Language',
+                  t.setting.system.language.title,
                   onTap: () => Get.to(() => LanguageDetailPage()),
                 ),
                 _MenuItem(CupertinoIcons.floppy_disk, 'Storage'),

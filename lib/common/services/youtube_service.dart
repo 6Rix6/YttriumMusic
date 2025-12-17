@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
+import 'package:yttrium_music/common/controllers/settings_controller.dart';
 import 'package:yttrium_music/common/controllers/theme_controller.dart';
 
 class YoutubeService extends GetxService {
@@ -9,17 +10,22 @@ class YoutubeService extends GetxService {
   final AuthController authController;
   final AudioPlayerController audioPlayerController;
   final ThemeController themeController;
+  final SettingsController settingsController;
 
   YoutubeService({
     required this.authController,
     required this.audioPlayerController,
     required this.themeController,
+    required this.settingsController,
   });
 
   Future<YoutubeService> init() async {
     youtube = yt.YouTube(
       cookie: authController.cookie.value,
-      locale: yt.YouTubeLocale(gl: 'JP', hl: 'ja'),
+      locale: yt.YouTubeLocale(
+        gl: settingsController.country.code,
+        hl: settingsController.language.code,
+      ),
       onCookieUpdate: (cookie) {
         authController.setCookie(cookie);
       },

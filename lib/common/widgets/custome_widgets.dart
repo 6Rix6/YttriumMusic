@@ -6,10 +6,11 @@ class ListTileWithCheckMark extends StatelessWidget {
   final String? title;
   final String subtitle;
   final IconData? icon;
+  final Widget? iconWidget;
+  final double? iconSize;
   final Color? tileColor;
   final Widget? titleWidget;
   final Widget? leading;
-  final double? iconSize;
   final bool dense;
   final bool expanded;
 
@@ -23,6 +24,7 @@ class ListTileWithCheckMark extends StatelessWidget {
     this.tileColor,
     this.titleWidget,
     this.leading,
+    this.iconWidget,
     this.iconSize,
     this.dense = false,
     this.expanded = true,
@@ -67,6 +69,8 @@ class ListTileWithCheckMark extends StatelessWidget {
             children: [
               if (leading != null)
                 leading!
+              else if (iconWidget != null)
+                iconWidget!
               else if (icon != null)
                 Icon(icon, size: iconSize),
               expanded

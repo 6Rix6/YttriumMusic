@@ -69,6 +69,7 @@ class _TranslationsSettingJa implements TranslationsSettingEn {
 	@override String get title => '設定';
 	@override late final _TranslationsSettingAccountJa account = _TranslationsSettingAccountJa._(_root);
 	@override late final _TranslationsSettingIfaceJa iface = _TranslationsSettingIfaceJa._(_root);
+	@override late final _TranslationsSettingSystemJa system = _TranslationsSettingSystemJa._(_root);
 }
 
 // Path: setting.account
@@ -98,6 +99,17 @@ class _TranslationsSettingIfaceJa implements TranslationsSettingIfaceEn {
 	@override late final _TranslationsSettingIfaceAppearanceJa appearance = _TranslationsSettingIfaceAppearanceJa._(_root);
 	@override late final _TranslationsSettingIfaceNotificationsJa notifications = _TranslationsSettingIfaceNotificationsJa._(_root);
 	@override late final _TranslationsSettingIfaceDisplayModeJa displayMode = _TranslationsSettingIfaceDisplayModeJa._(_root);
+}
+
+// Path: setting.system
+class _TranslationsSettingSystemJa implements TranslationsSettingSystemEn {
+	_TranslationsSettingSystemJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'システム';
+	@override late final _TranslationsSettingSystemLanguageJa language = _TranslationsSettingSystemLanguageJa._(_root);
 }
 
 // Path: setting.account.google
@@ -141,6 +153,17 @@ class _TranslationsSettingIfaceDisplayModeJa implements TranslationsSettingIface
 	@override String get title => '表示モード';
 }
 
+// Path: setting.system.language
+class _TranslationsSettingSystemLanguageJa implements TranslationsSettingSystemLanguageEn {
+	_TranslationsSettingSystemLanguageJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '言語';
+	@override late final _TranslationsSettingSystemLanguageLocaleJa locale = _TranslationsSettingSystemLanguageLocaleJa._(_root);
+}
+
 // Path: setting.iface.appearance.theme
 class _TranslationsSettingIfaceAppearanceThemeJa implements TranslationsSettingIfaceAppearanceThemeEn {
 	_TranslationsSettingIfaceAppearanceThemeJa._(this._root);
@@ -152,6 +175,19 @@ class _TranslationsSettingIfaceAppearanceThemeJa implements TranslationsSettingI
 	@override String get description => 'アプリの外観をカスタマイズします。';
 	@override late final _TranslationsSettingIfaceAppearanceThemeThemeModeJa themeMode = _TranslationsSettingIfaceAppearanceThemeThemeModeJa._(_root);
 	@override late final _TranslationsSettingIfaceAppearanceThemeDynamicColorJa dynamicColor = _TranslationsSettingIfaceAppearanceThemeDynamicColorJa._(_root);
+}
+
+// Path: setting.system.language.locale
+class _TranslationsSettingSystemLanguageLocaleJa implements TranslationsSettingSystemLanguageLocaleEn {
+	_TranslationsSettingSystemLanguageLocaleJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => 'ロケール';
+	@override String get description => '言語と国の選択';
+	@override late final _TranslationsSettingSystemLanguageLocaleLanguageJa language = _TranslationsSettingSystemLanguageLocaleLanguageJa._(_root);
+	@override late final _TranslationsSettingSystemLanguageLocaleCountryJa country = _TranslationsSettingSystemLanguageLocaleCountryJa._(_root);
 }
 
 // Path: setting.iface.appearance.theme.themeMode
@@ -175,6 +211,26 @@ class _TranslationsSettingIfaceAppearanceThemeDynamicColorJa implements Translat
 
 	// Translations
 	@override String get title => 'ダイナミックカラー';
+}
+
+// Path: setting.system.language.locale.language
+class _TranslationsSettingSystemLanguageLocaleLanguageJa implements TranslationsSettingSystemLanguageLocaleLanguageEn {
+	_TranslationsSettingSystemLanguageLocaleLanguageJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '言語';
+}
+
+// Path: setting.system.language.locale.country
+class _TranslationsSettingSystemLanguageLocaleCountryJa implements TranslationsSettingSystemLanguageLocaleCountryEn {
+	_TranslationsSettingSystemLanguageLocaleCountryJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '国';
 }
 
 /// The flat map containing all translations for locale <ja>.
@@ -213,6 +269,12 @@ extension on TranslationsJa {
 			'setting.iface.appearance.theme.dynamicColor.title' => 'ダイナミックカラー',
 			'setting.iface.notifications.title' => '通知',
 			'setting.iface.displayMode.title' => '表示モード',
+			'setting.system.title' => 'システム',
+			'setting.system.language.title' => '言語',
+			'setting.system.language.locale.title' => 'ロケール',
+			'setting.system.language.locale.description' => '言語と国の選択',
+			'setting.system.language.locale.language.title' => '言語',
+			'setting.system.language.locale.country.title' => '国',
 			_ => null,
 		};
 	}
