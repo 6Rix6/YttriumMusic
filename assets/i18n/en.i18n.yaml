@@ -48,3 +48,7 @@ setting:
           title: Language
         country:
           title: Country
+navigation:
+  home: Home
+  search: Search
+  library: Library

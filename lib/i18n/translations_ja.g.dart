@@ -39,6 +39,7 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	// Translations
 	@override late final _TranslationsGeneralJa general = _TranslationsGeneralJa._(_root);
 	@override late final _TranslationsSettingJa setting = _TranslationsSettingJa._(_root);
+	@override late final _TranslationsNavigationJa navigation = _TranslationsNavigationJa._(_root);
 }
 
 // Path: general
@@ -70,6 +71,18 @@ class _TranslationsSettingJa implements TranslationsSettingEn {
 	@override late final _TranslationsSettingAccountJa account = _TranslationsSettingAccountJa._(_root);
 	@override late final _TranslationsSettingIfaceJa iface = _TranslationsSettingIfaceJa._(_root);
 	@override late final _TranslationsSettingSystemJa system = _TranslationsSettingSystemJa._(_root);
+}
+
+// Path: navigation
+class _TranslationsNavigationJa implements TranslationsNavigationEn {
+	_TranslationsNavigationJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get home => 'ホーム';
+	@override String get search => '検索';
+	@override String get library => 'ライブラリ';
 }
 
 // Path: setting.account
@@ -275,6 +288,9 @@ extension on TranslationsJa {
 			'setting.system.language.locale.description' => '言語と国の選択',
 			'setting.system.language.locale.language.title' => '言語',
 			'setting.system.language.locale.country.title' => '国',
+			'navigation.home' => 'ホーム',
+			'navigation.search' => '検索',
+			'navigation.library' => 'ライブラリ',
 			_ => null,
 		};
 	}

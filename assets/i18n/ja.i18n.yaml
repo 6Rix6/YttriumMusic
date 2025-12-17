@@ -48,3 +48,7 @@ setting:
           title: 言語
         country:
           title: 国
+navigation:
+  home: ホーム
+  search: 検索
+  library: ライブラリ

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/consts/dummies.dart';
@@ -105,6 +106,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final authController = Get.find<AuthController>();
+    final audioPlayerController = Get.find<AudioPlayerController>();
     final theme = Theme.of(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -227,17 +229,27 @@ class _HomePageState extends State<HomePage> {
             //   ),
             // ),
             SizedBox(height: MediaQuery.of(context).size.height + 100),
-            Skeletonizer(
-              enabled: _isLoading,
-              containersColor: Colors.grey.shade800,
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _isLoading ? 5 : _sections.length,
-                itemBuilder: (context, index) {
-                  final section = _isLoading ? dummySection : _sections[index];
-                  return SectionWidget(section: section);
-                },
+            Obx(
+              () => Skeletonizer(
+                enabled: _isLoading,
+                containersColor: Colors.grey.shade800,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.only(
+                    top: 130,
+                    bottom: audioPlayerController.hasTrack
+                        ? kBottomNavigationBarHeight + 100
+                        : kBottomNavigationBarHeight + 16,
+                  ),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _isLoading ? 5 : _sections.length,
+                  itemBuilder: (context, index) {
+                    final section = _isLoading
+                        ? dummySection
+                        : _sections[index];
+                    return SectionWidget(section: section);
+                  },
+                ),
               ),
             ),
           ],

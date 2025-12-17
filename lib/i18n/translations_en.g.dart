@@ -42,6 +42,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	// Translations
 	late final TranslationsGeneralEn general = TranslationsGeneralEn._(_root);
 	late final TranslationsSettingEn setting = TranslationsSettingEn._(_root);
+	late final TranslationsNavigationEn navigation = TranslationsNavigationEn._(_root);
 }
 
 // Path: general
@@ -94,6 +95,24 @@ class TranslationsSettingEn {
 	late final TranslationsSettingAccountEn account = TranslationsSettingAccountEn._(_root);
 	late final TranslationsSettingIfaceEn iface = TranslationsSettingIfaceEn._(_root);
 	late final TranslationsSettingSystemEn system = TranslationsSettingSystemEn._(_root);
+}
+
+// Path: navigation
+class TranslationsNavigationEn {
+	TranslationsNavigationEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Home'
+	String get home => 'Home';
+
+	/// en: 'Search'
+	String get search => 'Search';
+
+	/// en: 'Library'
+	String get library => 'Library';
 }
 
 // Path: setting.account
@@ -354,6 +373,9 @@ extension on Translations {
 			'setting.system.language.locale.description' => 'Select your language and country.',
 			'setting.system.language.locale.language.title' => 'Language',
 			'setting.system.language.locale.country.title' => 'Country',
+			'navigation.home' => 'Home',
+			'navigation.search' => 'Search',
+			'navigation.library' => 'Library',
 			_ => null,
 		};
 	}

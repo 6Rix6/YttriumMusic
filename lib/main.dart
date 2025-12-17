@@ -52,6 +52,7 @@ void main() async {
   LocaleSettings.setLocaleRaw(settingsController.language.code);
 
   // request permissions
+  // TODO: request only when app first launch
   await Permission.notification.request();
 
   // webview debug setting
@@ -186,6 +187,7 @@ class _MainPageState extends State<MainPage>
             ),
           ),
 
+          // Player
           Obx(() {
             final hasTrack = audioPlayer.hasTrack;
             return AnimatedOpacity(
@@ -224,19 +226,19 @@ class _MainPageState extends State<MainPage>
                 selectedIndex: _currentIndex,
                 labelBehavior:
                     NavigationDestinationLabelBehavior.onlyShowSelected,
-                destinations: const <Widget>[
+                destinations: <Widget>[
                   NavigationDestination(
                     selectedIcon: Icon(Icons.home),
                     icon: Icon(Icons.home_outlined),
-                    label: 'Home',
+                    label: t.navigation.home,
                   ),
                   NavigationDestination(
                     icon: Icon(Icons.search),
-                    label: 'Search',
+                    label: t.navigation.search,
                   ),
                   NavigationDestination(
                     icon: Icon(Icons.library_music),
-                    label: 'Library',
+                    label: t.navigation.library,
                   ),
                 ],
               ),
