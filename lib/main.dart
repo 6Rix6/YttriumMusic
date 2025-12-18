@@ -65,11 +65,11 @@ void main() async {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
 
-  runApp(const YoutubeMusic());
+  runApp(const YttriumMusic());
 }
 
-class YoutubeMusic extends StatelessWidget {
-  const YoutubeMusic({super.key});
+class YttriumMusic extends StatelessWidget {
+  const YttriumMusic({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:yttrium_music/common/controllers/settings_controller.dart';
-import 'package:yttrium_music/common/widgets/custome_widgets.dart';
+import 'package:yttrium_music/common/widgets/custom_widgets.dart';
+import 'package:yttrium_music/common/widgets/dialogs/dialog_with_list.dart';
 import 'package:yttrium_music/common/widgets/modal_manager.dart';
 import 'package:yttrium_music/common/enums/locale.dart';
 import 'package:yttrium_music/pages/setting/setting_detail_page.dart';
@@ -31,63 +32,39 @@ class LanguageDetailPage extends StatelessWidget {
                 subtitle: settingsController.language.name,
                 onTap: () => modal.showPopup(
                   context,
-                  dialog: CustomBlurryDialog(
-                    titleWidget: Container(
-                      width: double.infinity,
-                      height: 60,
-                      color: theme.colorScheme.secondaryContainer,
-                      child: Center(
-                        child: Text(
-                          t.setting.system.language.locale.language.title,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                  dialog: DialogWithList(
+                    title: t.setting.system.language.locale.language.title,
+                    modalManager: modal,
+                    items: [
+                      ...Language.values.map(
+                        (e) => Obx(
+                          () => ListTileWithCheckMark(
+                            title: e.name,
+                            iconWidget: Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: theme.colorScheme.onSurface,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  e.name[0],
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ),
+                            active: settingsController.language == e,
+                            onTap: () {
+                              settingsController.language = e;
+                              modal.closeDialog();
+                            },
                           ),
                         ),
                       ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => modal.closeDialog(),
-                        child: Text(t.general.cancel),
-                      ),
                     ],
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Column(
-                        spacing: 4,
-                        children: [
-                          ...Language.values.map(
-                            (e) => Obx(
-                              () => ListTileWithCheckMark(
-                                title: e.name,
-                                iconWidget: Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: theme.colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      e.name[0],
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ),
-                                ),
-                                active: settingsController.language == e,
-                                onTap: () {
-                                  settingsController.language = e;
-                                  modal.closeDialog();
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),
@@ -98,63 +75,39 @@ class LanguageDetailPage extends StatelessWidget {
                 roundBottom: true,
                 onTap: () => modal.showPopup(
                   context,
-                  dialog: CustomBlurryDialog(
-                    titleWidget: Container(
-                      width: double.infinity,
-                      height: 60,
-                      color: theme.colorScheme.secondaryContainer,
-                      child: Center(
-                        child: Text(
-                          t.setting.system.language.locale.country.title,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
+                  dialog: DialogWithList(
+                    title: t.setting.system.language.locale.country.title,
+                    modalManager: modal,
+                    items: [
+                      ...Country.values.map(
+                        (e) => Obx(
+                          () => ListTileWithCheckMark(
+                            title: e.name,
+                            iconWidget: Container(
+                              width: 24,
+                              height: 24,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: theme.colorScheme.onSurface,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  e.name[0],
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ),
+                            ),
+                            active: settingsController.country == e,
+                            onTap: () {
+                              settingsController.country = e;
+                              modal.closeDialog();
+                            },
                           ),
                         ),
                       ),
-                    ),
-                    actions: [
-                      TextButton(
-                        onPressed: () => modal.closeDialog(),
-                        child: Text(t.general.cancel),
-                      ),
                     ],
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 12),
-                      child: Column(
-                        spacing: 4,
-                        children: [
-                          ...Country.values.map(
-                            (e) => Obx(
-                              () => ListTileWithCheckMark(
-                                title: e.name,
-                                iconWidget: Container(
-                                  width: 24,
-                                  height: 24,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: theme.colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      e.name[0],
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  ),
-                                ),
-                                active: settingsController.country == e,
-                                onTap: () {
-                                  settingsController.country = e;
-                                  modal.closeDialog();
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
               ),
