@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dynamic_color/dynamic_color.dart';
+
+import 'package:yttrium_music/route.dart';
 
 import 'package:yttrium_music/common/services/storage_service.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
@@ -18,12 +21,8 @@ import 'package:yttrium_music/common/controllers/youtube_search_controller.dart'
 import 'package:yttrium_music/common/widgets/player/player.dart';
 import 'package:yttrium_music/common/widgets/player/wallpaper.dart';
 
-import 'package:yttrium_music/pages/home_page.dart';
-import 'package:yttrium_music/pages/library_page.dart';
-import 'package:yttrium_music/pages/search_page.dart';
-import 'package:yttrium_music/pages/setting/setting_page.dart';
-
 import 'package:yttrium_music/i18n/translations.g.dart';
+import 'package:yttrium_music/common/utils/extensions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -76,7 +75,10 @@ class YttriumMusic extends StatelessWidget {
     return DynamicColorBuilder(
       builder: (lightColorScheme, darkColorScheme) => Obx(() {
         final themeController = Get.find<ThemeController>();
-        return GetMaterialApp(
+        return GetMaterialApp.router(
+          routeInformationParser: goRouter.routeInformationParser,
+          routerDelegate: goRouter.routerDelegate,
+          routeInformationProvider: goRouter.routeInformationProvider,
           title: 'YouTube Music',
           theme: _buildTheme(
             Brightness.light,
@@ -91,7 +93,7 @@ class YttriumMusic extends StatelessWidget {
                 : darkColorScheme,
           ),
           themeMode: themeController.themeMode,
-          home: const MainPage(),
+          // home: const MainPage(),
         );
       }),
     );
@@ -108,7 +110,8 @@ ThemeData _buildTheme(Brightness brightness, ColorScheme? colorScheme) {
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final StatefulNavigationShell navigationShell;
+  const MainPage({super.key, required this.navigationShell});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -116,7 +119,6 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage>
     with SingleTickerProviderStateMixin {
-  int _currentIndex = 0;
   late final AnimationController _animationController;
 
   @override
@@ -136,7 +138,6 @@ class _MainPageState extends State<MainPage>
     final theme = Theme.of(context);
     final audioPlayer = Get.find<AudioPlayerController>();
     final playerChild = Player(animation: _animationController);
-    final ySearchController = Get.find<YoutubeSearchController>();
     final authController = Get.find<AuthController>();
     return Material(
       child: Stack(
@@ -163,9 +164,8 @@ class _MainPageState extends State<MainPage>
                 actions: [
                   IconButton(
                     icon: const Icon(CupertinoIcons.search),
-                    onPressed: () {
-                      ySearchController.isEditing.toggle();
-                    },
+                    onPressed: () {},
+                    // onPressed: () => Get.to(() => const SearchPage()),
                   ),
                   Obx(() {
                     final icon = authController.isLoggedIn.value
@@ -185,7 +185,7 @@ class _MainPageState extends State<MainPage>
                         : const Icon(CupertinoIcons.person);
                     return IconButton(
                       icon: icon,
-                      onPressed: () => Get.to(() => const SettingPage()),
+                      onPressed: () => context.push('/setting'),
                     );
                   }),
                 ],
@@ -194,62 +194,20 @@ class _MainPageState extends State<MainPage>
                 elevation: 0,
                 scrolledUnderElevation: 0,
               ),
-              body: Stack(
-                children: [
-                  IndexedStack(
-                    index: _currentIndex,
-                    children: const <Widget>[
-                      HomePage(),
-                      SearchPage(),
-                      LibraryPage(),
-                    ],
-                  ),
 
-                  // Search Screen
-                  // Obx(
-                  //   () => Visibility(
-                  //     visible: ySearchController.isEditing.value,
-                  //     child: AnimatedOpacity(
-                  //       opacity: ySearchController.isEditing.value ? 1.0 : 0.0,
-                  //       duration: const Duration(milliseconds: 500),
-                  //       child: Positioned.fill(
-                  //         child: Container(
-                  //           color: theme.scaffoldBackgroundColor,
-                  //           child: const Center(child: CircularProgressIndicator()),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // Obx(
-                  //   () => AnimatedOpacity(
-                  //     opacity: ySearchController.isEditing.value ? 1.0 : 0.0,
-                  //     duration: const Duration(milliseconds: 100),
-                  //     child: Positioned.fill(
-                  //       child: Container(
-                  //         color: theme.scaffoldBackgroundColor,
-                  //         child: const Center(child: CircularProgressIndicator()),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  Positioned.fill(
-                    child: Obx(
-                      () => AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: ySearchController.isEditing.value
-                            ? Container(
-                                color: theme.scaffoldBackgroundColor,
-                                child: const Center(
-                                  child: CircularProgressIndicator(),
-                                ),
-                              )
-                            : null,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // body: Stack(
+              //   children: [
+              //     IndexedStack(
+              //       index: _currentIndex,
+              //       children: const <Widget>[
+              //         HomePage(),
+              //         SearchPage(),
+              //         LibraryPage(),
+              //       ],
+              //     ),
+              //   ],
+              // ),
+              body: widget.navigationShell,
               bottomNavigationBar: AnimatedBuilder(
                 animation: _animationController,
                 builder: (context, _) {
@@ -271,31 +229,31 @@ class _MainPageState extends State<MainPage>
                         ),
                       ),
                       child: NavigationBar(
-                        maintainBottomViewPadding: true,
-                        onDestinationSelected: (int index) {
-                          setState(() {
-                            _currentIndex = index;
-                          });
-                        },
                         height: 64,
-                        selectedIndex: _currentIndex,
+                        selectedIndex: widget.navigationShell.currentIndex,
                         labelBehavior:
                             NavigationDestinationLabelBehavior.onlyShowSelected,
-                        destinations: <Widget>[
+                        destinations: const [
                           NavigationDestination(
-                            selectedIcon: Icon(Icons.home),
-                            icon: Icon(Icons.home_outlined),
-                            label: t.navigation.home,
+                            icon: Icon(Icons.home),
+                            label: 'home',
                           ),
                           NavigationDestination(
                             icon: Icon(Icons.search),
-                            label: t.navigation.search,
+                            label: 'search',
                           ),
                           NavigationDestination(
                             icon: Icon(Icons.library_music),
-                            label: t.navigation.library,
+                            label: 'library',
                           ),
                         ],
+                        onDestinationSelected: (index) {
+                          widget.navigationShell.goBranch(
+                            index,
+                            initialLocation:
+                                index == widget.navigationShell.currentIndex,
+                          );
+                        },
                       ),
                     ),
                   );
@@ -362,17 +320,5 @@ class _MainPageState extends State<MainPage>
         ],
       ),
     );
-  }
-}
-
-extension DENumberUtils<E extends num> on E {
-  E withMinimum(E min) {
-    if (this < min) return min;
-    return this;
-  }
-
-  E withMaximum(E max) {
-    if (this > max) return max;
-    return this;
   }
 }

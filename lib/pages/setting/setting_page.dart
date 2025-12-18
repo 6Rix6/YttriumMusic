@@ -2,11 +2,10 @@ import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/pages/login_page.dart';
-import 'package:yttrium_music/pages/setting/details/appearance_detail_page.dart';
-import 'package:yttrium_music/pages/setting/details/language_detail_page.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 
 class SettingPage extends StatelessWidget {
@@ -23,7 +22,7 @@ class SettingPage extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(CupertinoIcons.chevron_back),
           onPressed: () {
-            Get.back();
+            context.pop();
           },
         ),
         title: Text(t.setting.title),
@@ -41,7 +40,7 @@ class SettingPage extends StatelessWidget {
           children: [
             _SettingPageSection(
               title: t.setting.account.title,
-              child: _buildAccountCard(surfaceColor),
+              child: _buildAccountCard(surfaceColor, context),
             ),
 
             _SettingPageSection(
@@ -50,7 +49,7 @@ class SettingPage extends StatelessWidget {
                 _MenuItem(
                   CupertinoIcons.color_filter,
                   t.setting.iface.appearance.title,
-                  onTap: () => Get.to(() => const AppearanceDetailPage()),
+                  onTap: () => context.push('/setting/appearance'),
                 ),
                 _MenuItem(
                   CupertinoIcons.bell,
@@ -61,7 +60,7 @@ class SettingPage extends StatelessWidget {
                   CupertinoIcons.square_list,
                   t.setting.iface.displayMode.title,
                 ),
-              ]),
+              ], context),
             ),
 
             _SettingPageSection(
@@ -70,7 +69,7 @@ class SettingPage extends StatelessWidget {
                 _MenuItem(CupertinoIcons.speaker_2, 'Equalizer'),
                 _MenuItem(CupertinoIcons.shuffle, 'Crossfade'),
                 _MenuItem(CupertinoIcons.infinite, 'Gapless Playback'),
-              ]),
+              ], context),
             ),
 
             _SettingPageSection(
@@ -79,12 +78,12 @@ class SettingPage extends StatelessWidget {
                 _MenuItem(
                   CupertinoIcons.textformat,
                   t.setting.system.language.title,
-                  onTap: () => Get.to(() => LanguageDetailPage()),
+                  onTap: () => context.push('/setting/language'),
                 ),
                 _MenuItem(CupertinoIcons.floppy_disk, 'Storage'),
                 _MenuItem(CupertinoIcons.lock, 'Data & Privacy'),
                 _MenuItem(CupertinoIcons.info, 'About'),
-              ]),
+              ], context),
             ),
           ],
         ),
@@ -92,9 +91,9 @@ class SettingPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAccountCard(Color surfaceColor) {
+  Widget _buildAccountCard(Color surfaceColor, BuildContext context) {
     return Obx(() {
-      final theme = Theme.of(Get.context!);
+      final theme = Theme.of(context);
       final authController = Get.find<AuthController>();
       final youtubeService = Get.find<YoutubeService>();
       final isLoggedIn = authController.isLoggedIn.value;
@@ -171,8 +170,12 @@ class SettingPage extends StatelessWidget {
     });
   }
 
-  Widget _buildMenuSection(Color color, List<_MenuItem> items) {
-    final theme = Theme.of(Get.context!);
+  Widget _buildMenuSection(
+    Color color,
+    List<_MenuItem> items,
+    BuildContext context,
+  ) {
+    final theme = Theme.of(context);
     return Column(
       spacing: 2,
       children: items.map((item) {
