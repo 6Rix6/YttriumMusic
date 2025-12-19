@@ -112,9 +112,6 @@ class _SearchResultPageState extends State<SearchResultPage> {
         success: (value) {
           setState(() {
             _searchResult = value;
-            for (var song in value.items) {
-              print(song);
-            }
           });
         },
         error: (error) {
