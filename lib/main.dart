@@ -93,7 +93,6 @@ class YttriumMusic extends StatelessWidget {
                 : darkColorScheme,
           ),
           themeMode: themeController.themeMode,
-          // home: const MainPage(),
         );
       }),
     );

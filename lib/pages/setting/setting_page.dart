@@ -119,12 +119,11 @@ class SettingPage extends StatelessWidget {
                   await context.push("/setting/signin") as SigninResult?;
               if (result != null) {
                 await youtubeService.login(result.innerTubeCookie);
-
-                // Get.snackbar(
-                //   t.general.success,
-                //   t.setting.account.signInSuccess,
-                //   snackPosition: SnackPosition.TOP,
-                // );
+                Get.snackbar(
+                  t.general.success,
+                  t.setting.account.signInSuccess,
+                  snackPosition: SnackPosition.TOP,
+                );
               } else {
                 throw Exception(t.setting.account.signInFailed);
               }

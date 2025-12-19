@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yttrium_music/main.dart';
 import 'package:yttrium_music/pages/album_page.dart';
@@ -10,13 +11,12 @@ import 'package:yttrium_music/pages/setting/details/language_detail_page.dart';
 import 'package:yttrium_music/pages/setting/setting_page.dart';
 import 'package:yttrium_music/pages/signin_page.dart';
 
-final rootNavigatorKey = GlobalKey<NavigatorState>();
 final homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final libraryNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'library');
 final searchNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'search');
 
 final goRouter = GoRouter(
-  navigatorKey: rootNavigatorKey,
+  navigatorKey: Get.key,
   initialLocation: '/home',
   routes: [
     GoRoute(
@@ -56,7 +56,7 @@ final goRouter = GoRouter(
       ],
     ),
     StatefulShellRoute.indexedStack(
-      parentNavigatorKey: rootNavigatorKey,
+      parentNavigatorKey: Get.key,
       builder: (context, state, navigationShell) {
         return MainPage(navigationShell: navigationShell);
       },

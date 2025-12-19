@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({super.key});
@@ -7,7 +8,12 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("GetX Audio Player")),
       body: Center(
-        child: TextButton(onPressed: () {}, child: const Text("test")),
+        child: TextButton(
+          onPressed: () {
+            Get.snackbar("test", "test", snackPosition: SnackPosition.TOP);
+          },
+          child: const Text("test"),
+        ),
       ),
     );
   }
