@@ -16,6 +16,7 @@ class AudioPlayerController extends GetxController {
   final currentMediaItem = Rxn<MediaItem>();
 
   bool get hasTrack => currentMediaItem.value != null;
+  double get playerHeight => hasTrack ? 36 : 0;
 
   @override
   void onInit() {

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:yttrium_music/common/controllers/auth_controller.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -8,34 +12,55 @@ class LibraryPage extends StatefulWidget {
 }
 
 class _LibraryPageState extends State<LibraryPage> {
-  String _currentText = "Hello";
-
-  void _switchText() {
-    setState(() {
-      _currentText = _currentText == "Hello" ? "World" : "Hello";
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final authController = Get.find<AuthController>();
     return Scaffold(
-      appBar: AppBar(title: Text("Text Switching Animation")),
-      body: Center(
-        child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 500),
-          child: Text(
-            _currentText,
-            // The key is essential for AnimatedSwitcher to identify a change
-            key: ValueKey<String>(_currentText),
-            style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
-          ),
+      appBar: AppBar(
+        title: Row(
+          spacing: 12,
+          children: [
+            const Icon(
+              CupertinoIcons.arrowtriangle_right_circle_fill,
+              size: 28,
+            ),
+            const Text('Music', style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(CupertinoIcons.search),
+            onPressed: () => context.push('/search'),
+          ),
+          Obx(() {
+            final icon = authController.isLoggedIn.value
+                ? Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          authController.accountPhotoUrl.value,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : const Icon(CupertinoIcons.person);
+            return IconButton(
+              icon: icon,
+              onPressed: () => context.push('/setting'),
+            );
+          }),
+        ],
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
       ),
-      floatingActionButton: FloatingActionButton(
-        isExtended: false,
-        onPressed: _switchText,
-        child: Icon(Icons.change_circle),
-      ),
+
+      body: Center(child: Text("library")),
     );
   }
 }

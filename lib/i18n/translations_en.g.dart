@@ -43,6 +43,7 @@ class Translations with BaseTranslations<AppLocale, Translations> {
 	late final TranslationsGeneralEn general = TranslationsGeneralEn._(_root);
 	late final TranslationsSettingEn setting = TranslationsSettingEn._(_root);
 	late final TranslationsNavigationEn navigation = TranslationsNavigationEn._(_root);
+	late final TranslationsSearchEn search = TranslationsSearchEn._(_root);
 }
 
 // Path: general
@@ -113,6 +114,21 @@ class TranslationsNavigationEn {
 
 	/// en: 'Library'
 	String get library => 'Library';
+}
+
+// Path: search
+class TranslationsSearchEn {
+	TranslationsSearchEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+
+	/// en: 'Search'
+	String get title => 'Search';
+
+	/// en: 'Search songs, artists...'
+	String get hint => 'Search songs, artists...';
 }
 
 // Path: setting.account
@@ -376,6 +392,8 @@ extension on Translations {
 			'navigation.home' => 'Home',
 			'navigation.search' => 'Search',
 			'navigation.library' => 'Library',
+			'search.title' => 'Search',
+			'search.hint' => 'Search songs, artists...',
 			_ => null,
 		};
 	}

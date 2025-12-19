@@ -52,3 +52,6 @@ navigation:
   home: Home
   search: Search
   library: Library
+search:
+  title: Search
+  hint: Search songs, artists...

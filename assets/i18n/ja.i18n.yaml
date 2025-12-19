@@ -52,3 +52,6 @@ navigation:
   home: ホーム
   search: 検索
   library: ライブラリ
+search:
+  title: 検索
+  hint: 曲、アーティストを検索...

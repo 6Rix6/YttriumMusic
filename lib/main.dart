@@ -137,61 +137,15 @@ class _MainPageState extends State<MainPage>
     final theme = Theme.of(context);
     final audioPlayer = Get.find<AudioPlayerController>();
     final playerChild = Player(animation: _animationController);
-    final authController = Get.find<AuthController>();
     return Material(
       child: Stack(
         children: [
           SafeArea(
             bottom: false,
+            top: false,
             child: Scaffold(
               extendBody: true,
               resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                title: Row(
-                  spacing: 12,
-                  children: [
-                    const Icon(
-                      CupertinoIcons.arrowtriangle_right_circle_fill,
-                      size: 28,
-                    ),
-                    const Text(
-                      'Music',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-                actions: [
-                  IconButton(
-                    icon: const Icon(CupertinoIcons.search),
-                    onPressed: () => context.go('/search'),
-                  ),
-                  Obx(() {
-                    final icon = authController.isLoggedIn.value
-                        ? Container(
-                            width: 24,
-                            height: 24,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                  authController.accountPhotoUrl.value,
-                                ),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          )
-                        : const Icon(CupertinoIcons.person);
-                    return IconButton(
-                      icon: icon,
-                      onPressed: () => context.push('/setting'),
-                    );
-                  }),
-                ],
-                backgroundColor: Colors.transparent,
-                surfaceTintColor: Colors.transparent,
-                elevation: 0,
-                scrolledUnderElevation: 0,
-              ),
               body: widget.navigationShell,
               bottomNavigationBar: AnimatedBuilder(
                 animation: _animationController,
@@ -223,10 +177,10 @@ class _MainPageState extends State<MainPage>
                             icon: Icon(Icons.home),
                             label: t.navigation.home,
                           ),
-                          NavigationDestination(
-                            icon: Icon(Icons.search),
-                            label: t.navigation.search,
-                          ),
+                          // NavigationDestination(
+                          //   icon: Icon(Icons.search),
+                          //   label: t.navigation.search,
+                          // ),
                           NavigationDestination(
                             icon: Icon(Icons.library_music),
                             label: t.navigation.library,

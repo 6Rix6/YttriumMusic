@@ -40,6 +40,7 @@ class TranslationsJa with BaseTranslations<AppLocale, Translations> implements T
 	@override late final _TranslationsGeneralJa general = _TranslationsGeneralJa._(_root);
 	@override late final _TranslationsSettingJa setting = _TranslationsSettingJa._(_root);
 	@override late final _TranslationsNavigationJa navigation = _TranslationsNavigationJa._(_root);
+	@override late final _TranslationsSearchJa search = _TranslationsSearchJa._(_root);
 }
 
 // Path: general
@@ -83,6 +84,17 @@ class _TranslationsNavigationJa implements TranslationsNavigationEn {
 	@override String get home => 'ホーム';
 	@override String get search => '検索';
 	@override String get library => 'ライブラリ';
+}
+
+// Path: search
+class _TranslationsSearchJa implements TranslationsSearchEn {
+	_TranslationsSearchJa._(this._root);
+
+	final TranslationsJa _root; // ignore: unused_field
+
+	// Translations
+	@override String get title => '検索';
+	@override String get hint => '曲、アーティストを検索...';
 }
 
 // Path: setting.account
@@ -291,6 +303,8 @@ extension on TranslationsJa {
 			'navigation.home' => 'ホーム',
 			'navigation.search' => '検索',
 			'navigation.library' => 'ライブラリ',
+			'search.title' => '検索',
+			'search.hint' => '曲、アーティストを検索...',
 			_ => null,
 		};
 	}

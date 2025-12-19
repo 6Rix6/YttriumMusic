@@ -14,6 +14,10 @@ import 'package:yttrium_music/pages/signin_page.dart';
 final homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
 final libraryNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'library');
 final searchNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'search');
+final searchResultNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'searchResult',
+);
+final albumNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'album');
 
 final goRouter = GoRouter(
   navigatorKey: Get.key,
@@ -77,22 +81,6 @@ final goRouter = GoRouter(
           ],
         ),
 
-        // search branch
-        StatefulShellBranch(
-          navigatorKey: searchNavigatorKey,
-          routes: [
-            GoRoute(
-              path: '/search',
-              pageBuilder: (context, state) {
-                return NoTransitionPage(
-                  key: state.pageKey,
-                  child: const SearchPage(),
-                );
-              },
-            ),
-          ],
-        ),
-
         // library branch
         StatefulShellBranch(
           navigatorKey: libraryNavigatorKey,
@@ -108,13 +96,71 @@ final goRouter = GoRouter(
             ),
           ],
         ),
+
+        // search branch
+        StatefulShellBranch(
+          navigatorKey: searchNavigatorKey,
+          routes: [
+            GoRoute(
+              path: '/search',
+              name: 'search',
+              pageBuilder: (context, state) {
+                return MaterialPage(
+                  key: state.pageKey,
+                  child: const SearchPage(),
+                );
+              },
+              routes: [
+                GoRoute(
+                  path: ':query',
+                  name: 'searchResult',
+                  pageBuilder: (context, state) {
+                    return MaterialPage(
+                      key: state.pageKey,
+                      child: SearchResultPage(
+                        query: state.pathParameters['query']!,
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+
+        // StatefulShellBranch(
+        //   navigatorKey: searchResultNavigatorKey,
+        //   routes: [
+        //     GoRoute(
+        //       path: '/search/:query',
+        //       pageBuilder: (context, state) {
+        //         return MaterialPage(
+        //           key: state.pageKey,
+        //           child: SearchResultPage(
+        //             query: state.pathParameters['query']!,
+        //           ),
+        //         );
+        //       },
+        //     ),
+        //   ],
+        // ),
+
+        // album branch
+        StatefulShellBranch(
+          navigatorKey: albumNavigatorKey,
+          routes: [
+            GoRoute(
+              path: '/album',
+              pageBuilder: (context, state) {
+                return MaterialPage(
+                  key: state.pageKey,
+                  child: const AlbumPage(),
+                );
+              },
+            ),
+          ],
+        ),
       ],
-    ),
-    GoRoute(
-      path: '/album',
-      pageBuilder: (context, state) {
-        return MaterialPage(key: state.pageKey, child: const AlbumPage());
-      },
     ),
   ],
   errorPageBuilder: (context, state) => MaterialPage(

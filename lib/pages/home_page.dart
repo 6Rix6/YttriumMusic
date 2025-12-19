@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
+import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
 import 'package:yttrium_music/common/consts/dummies.dart';
 import 'package:yttrium_music/common/widgets/section_widget.dart';
@@ -104,7 +107,51 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     final audioPlayerController = Get.find<AudioPlayerController>();
+    final authController = Get.find<AuthController>();
     return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          spacing: 12,
+          children: [
+            const Icon(
+              CupertinoIcons.arrowtriangle_right_circle_fill,
+              size: 28,
+            ),
+            const Text('Music', style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(CupertinoIcons.search),
+            onPressed: () => context.push('/search'),
+          ),
+          Obx(() {
+            final icon = authController.isLoggedIn.value
+                ? Container(
+                    width: 24,
+                    height: 24,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: NetworkImage(
+                          authController.accountPhotoUrl.value,
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                : const Icon(CupertinoIcons.person);
+            return IconButton(
+              icon: icon,
+              onPressed: () => context.push('/setting'),
+            );
+          }),
+        ],
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Stack(
