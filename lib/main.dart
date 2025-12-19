@@ -164,8 +164,7 @@ class _MainPageState extends State<MainPage>
                 actions: [
                   IconButton(
                     icon: const Icon(CupertinoIcons.search),
-                    onPressed: () {},
-                    // onPressed: () => Get.to(() => const SearchPage()),
+                    onPressed: () => context.go('/search'),
                   ),
                   Obx(() {
                     final icon = authController.isLoggedIn.value
@@ -194,19 +193,6 @@ class _MainPageState extends State<MainPage>
                 elevation: 0,
                 scrolledUnderElevation: 0,
               ),
-
-              // body: Stack(
-              //   children: [
-              //     IndexedStack(
-              //       index: _currentIndex,
-              //       children: const <Widget>[
-              //         HomePage(),
-              //         SearchPage(),
-              //         LibraryPage(),
-              //       ],
-              //     ),
-              //   ],
-              // ),
               body: widget.navigationShell,
               bottomNavigationBar: AnimatedBuilder(
                 animation: _animationController,
@@ -233,18 +219,18 @@ class _MainPageState extends State<MainPage>
                         selectedIndex: widget.navigationShell.currentIndex,
                         labelBehavior:
                             NavigationDestinationLabelBehavior.onlyShowSelected,
-                        destinations: const [
+                        destinations: [
                           NavigationDestination(
                             icon: Icon(Icons.home),
-                            label: 'home',
+                            label: t.navigation.home,
                           ),
                           NavigationDestination(
                             icon: Icon(Icons.search),
-                            label: 'search',
+                            label: t.navigation.search,
                           ),
                           NavigationDestination(
                             icon: Icon(Icons.library_music),
-                            label: 'library',
+                            label: t.navigation.library,
                           ),
                         ],
                         onDestinationSelected: (index) {

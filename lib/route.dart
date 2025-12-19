@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yttrium_music/main.dart';
+import 'package:yttrium_music/pages/album_page.dart';
 import 'package:yttrium_music/pages/home_page.dart';
 import 'package:yttrium_music/pages/library_page.dart';
 import 'package:yttrium_music/pages/search_page.dart';
 import 'package:yttrium_music/pages/setting/details/appearance_detail_page.dart';
 import 'package:yttrium_music/pages/setting/details/language_detail_page.dart';
 import 'package:yttrium_music/pages/setting/setting_page.dart';
+import 'package:yttrium_music/pages/signin_page.dart';
 
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final homeNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'home');
@@ -17,13 +19,6 @@ final goRouter = GoRouter(
   navigatorKey: rootNavigatorKey,
   initialLocation: '/home',
   routes: [
-    // GoRoute(
-    //   path: '/',
-    //   name: 'initial',
-    //   pageBuilder: (context, state) {
-    //     return MaterialPage(key: state.pageKey, child: const MainPage());
-    //   },
-    // ),
     GoRoute(
       path: '/setting',
       name: 'setting',
@@ -49,6 +44,13 @@ final goRouter = GoRouter(
               key: state.pageKey,
               child: const LanguageDetailPage(),
             );
+          },
+        ),
+        GoRoute(
+          path: "signin",
+          name: "signin",
+          pageBuilder: (context, state) {
+            return MaterialPage(key: state.pageKey, child: const SigninPage());
           },
         ),
       ],
@@ -107,6 +109,12 @@ final goRouter = GoRouter(
           ],
         ),
       ],
+    ),
+    GoRoute(
+      path: '/album',
+      pageBuilder: (context, state) {
+        return MaterialPage(key: state.pageKey, child: const AlbumPage());
+      },
     ),
   ],
   errorPageBuilder: (context, state) => MaterialPage(

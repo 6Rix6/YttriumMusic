@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:yttrium_music/common/controllers/auth_controller.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
-import 'package:yttrium_music/pages/login_page.dart';
+import 'package:yttrium_music/pages/signin_page.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 
 class SettingPage extends StatelessWidget {
@@ -114,16 +114,17 @@ class SettingPage extends StatelessWidget {
           if (isLoggedIn) {
             youtubeService.logout();
           } else {
-            final result =
-                await Get.to(() => const LoginPage()) as LoginResult?;
             try {
+              final result =
+                  await context.push("/setting/signin") as SigninResult?;
               if (result != null) {
                 await youtubeService.login(result.innerTubeCookie);
-                Get.snackbar(
-                  t.general.success,
-                  t.setting.account.signInSuccess,
-                  snackPosition: SnackPosition.TOP,
-                );
+
+                // Get.snackbar(
+                //   t.general.success,
+                //   t.setting.account.signInSuccess,
+                //   snackPosition: SnackPosition.TOP,
+                // );
               } else {
                 throw Exception(t.setting.account.signInFailed);
               }

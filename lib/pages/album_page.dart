@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AlbumPage extends StatefulWidget {
-  final String browseId;
-  const AlbumPage({super.key, required this.browseId});
+  // final String browseId;
+  const AlbumPage({super.key});
 
   @override
   State<AlbumPage> createState() => _AlbumPageState();
@@ -11,6 +11,9 @@ class AlbumPage extends StatefulWidget {
 class _AlbumPageState extends State<AlbumPage> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(title: const Text('Album')),
+      body: Center(child: Text("Album Page")),
+    );
   }
 }

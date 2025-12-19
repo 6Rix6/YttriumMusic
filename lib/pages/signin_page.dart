@@ -1,27 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
+import 'package:yttrium_music/i18n/translations.g.dart';
 
-class LoginResult {
+class SigninResult {
   final String visitorData;
   final String dataSyncId;
   final String innerTubeCookie;
 
-  LoginResult({
+  SigninResult({
     required this.visitorData,
     required this.dataSyncId,
     required this.innerTubeCookie,
   });
 }
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SigninPage> createState() => _SigninPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SigninPageState extends State<SigninPage> {
   InAppWebViewController? controller;
 
   String visitorData = "";
@@ -35,11 +37,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: Text(t.setting.account.signIn),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Get.back(
-            result: LoginResult(
+          icon: const Icon(CupertinoIcons.chevron_back),
+          onPressed: () => context.pop(
+            SigninResult(
               visitorData: visitorData,
               dataSyncId: dataSyncId,
               innerTubeCookie: innerTubeCookie,

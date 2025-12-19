@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:yttrium_music/common/utils/extensions.dart';
@@ -333,5 +335,154 @@ class PopupTile extends StatelessWidget {
         if (action != null) Padding(padding: EdgeInsets.all(3), child: action),
       ],
     );
+  }
+}
+
+class NamidaBgBlurClipped extends StatelessWidget {
+  final double blur;
+  final bool enabled;
+  final Clip clipBehavior;
+  final BoxShape shape;
+  final BoxDecoration? decoration;
+  final BorderRadiusGeometry? borderRadius;
+  final Widget child;
+
+  const NamidaBgBlurClipped({
+    super.key,
+    required this.blur,
+    this.enabled = true,
+    this.shape = BoxShape.rectangle,
+    this.clipBehavior = Clip.antiAlias,
+    this.decoration,
+    this.borderRadius,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final decoration = this.decoration;
+
+    if (!enabled || blur == 0) {
+      return decoration != null
+          ? DecoratedBox(decoration: decoration, child: child)
+          : borderRadius != null && shape != BoxShape.rectangle
+          ? DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                shape: decoration?.shape ?? BoxShape.rectangle,
+              ),
+            )
+          : child;
+    }
+
+    return ClipPath(
+      clipBehavior: clipBehavior,
+      clipper: DecorationClipper(
+        decoration: BoxDecoration(
+          borderRadius: decoration?.borderRadius ?? borderRadius,
+          shape: decoration?.shape ?? shape,
+        ),
+      ),
+      child: NamidaBgBlur(
+        blur: blur,
+        enabled: enabled,
+        child: decoration != null
+            ? DecoratedBox(
+                decoration: BoxDecoration(
+                  borderRadius: decoration.borderRadius,
+                  shape: decoration.shape,
+                  backgroundBlendMode: decoration.backgroundBlendMode,
+                  border: decoration.border,
+                  boxShadow: decoration.boxShadow,
+                  color: decoration.color,
+                  gradient: decoration.gradient,
+                  image: decoration.image,
+                ),
+                child: child,
+              )
+            : child,
+      ),
+    );
+  }
+}
+
+class NamidaBgBlur extends StatelessWidget {
+  final double blur;
+  final bool enabled;
+  final Widget child;
+
+  const NamidaBgBlur({
+    super.key,
+    required this.blur,
+    this.enabled = true,
+    required this.child,
+  });
+
+  static final _groupKey = BackdropKey();
+
+  @override
+  Widget build(BuildContext context) {
+    if (!enabled || blur == 0) return child;
+    return BackdropFilter(
+      backdropGroupKey: _groupKey,
+      filter: ImageFilter.blur(
+        sigmaX: blur,
+        sigmaY: blur,
+        tileMode: NamidaBlur.kDefaultTileMode,
+      ),
+      child: child,
+    );
+  }
+}
+
+/// Blurs a child, effective for performance
+class NamidaBlur extends StatelessWidget {
+  final double blur;
+  final bool enabled;
+  final TileMode? tileMode;
+  final Widget child;
+
+  const NamidaBlur({
+    super.key,
+    required this.blur,
+    this.enabled = true,
+    bool fixArtifacts = false,
+    required this.child,
+  }) : tileMode = fixArtifacts ? TileMode.decal : NamidaBlur.kDefaultTileMode;
+
+  static const kDefaultTileMode = TileMode.clamp;
+
+  @override
+  Widget build(BuildContext context) {
+    return ImageFiltered(
+      enabled: enabled && blur > 0,
+      imageFilter: ImageFilter.blur(
+        sigmaX: blur,
+        sigmaY: blur,
+        tileMode: tileMode,
+      ),
+      child: child,
+    );
+  }
+}
+
+class DecorationClipper extends CustomClipper<Path> {
+  const DecorationClipper({
+    this.textDirection = TextDirection.ltr,
+    required this.decoration,
+  });
+
+  final TextDirection textDirection;
+  final Decoration decoration;
+
+  @override
+  Path getClip(Size size) {
+    return decoration.getClipPath(Offset.zero & size, textDirection);
+  }
+
+  @override
+  bool shouldReclip(DecorationClipper oldClipper) {
+    return oldClipper.decoration != decoration ||
+        oldClipper.textDirection != textDirection;
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:go_router/go_router.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:yttrium_music/common/services/youtube_service.dart';
 // import 'package:yttrium_music/pages/album_page.dart';
@@ -72,6 +73,7 @@ class AlbumItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       // onTap: () => Get.to(() => AlbumPage(browseId: item.browseId)),
+      onTap: () => context.push('/album'),
       child: SizedBox(
         width: kImageHeight,
         height: kImageHeight,
