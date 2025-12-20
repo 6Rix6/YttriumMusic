@@ -9,7 +9,7 @@ class SectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (section.items == null || section.items!.isEmpty) {
+    if (section.contents == null || section.contents!.isEmpty) {
       return const SizedBox.shrink();
     }
     final theme = Theme.of(context);

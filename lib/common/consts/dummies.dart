@@ -36,7 +36,7 @@ const dummyAlbum = AlbumItem(
 final dummySection = Section(
   itemType: SectionItemType.musicTwoRowItem,
   type: SectionType.musicCarouselShelf,
-  items: List.filled(5, dummySong),
+  contents: List.filled(5, dummySong),
   title: "Dummy Section",
   header: SectionHeader(title: "Dummy Header"),
 );

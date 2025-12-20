@@ -108,78 +108,83 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final audioPlayerController = Get.find<AudioPlayerController>();
     final authController = Get.find<AuthController>();
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          spacing: 12,
-          children: [
-            const Icon(
-              CupertinoIcons.arrowtriangle_right_circle_fill,
-              size: 28,
-            ),
-            const Text('Music', style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(CupertinoIcons.search),
-            onPressed: () => context.push('/search'),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            spacing: 12,
+            children: [
+              const Icon(
+                CupertinoIcons.arrowtriangle_right_circle_fill,
+                size: 28,
+              ),
+              const Text(
+                'Music',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
           ),
-          Obx(() {
-            final icon = authController.isLoggedIn.value
-                ? Container(
-                    width: 24,
-                    height: 24,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        image: NetworkImage(
-                          authController.accountPhotoUrl.value,
+          actions: [
+            IconButton(
+              icon: const Icon(CupertinoIcons.search),
+              onPressed: () => context.push('/search'),
+            ),
+            Obx(() {
+              final icon = authController.isLoggedIn.value
+                  ? Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: NetworkImage(
+                            authController.accountPhotoUrl.value,
+                          ),
+                          fit: BoxFit.cover,
                         ),
-                        fit: BoxFit.cover,
                       ),
+                    )
+                  : const Icon(CupertinoIcons.person);
+              return IconButton(
+                icon: icon,
+                onPressed: () => context.push('/setting'),
+              );
+            }),
+          ],
+          backgroundColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+        ),
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          child: Stack(
+            children: [
+              SizedBox(height: MediaQuery.of(context).size.height + 100),
+              Obx(
+                () => Skeletonizer(
+                  enabled: _isLoading,
+                  containersColor: Colors.grey.shade800,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.only(
+                      bottom: audioPlayerController.hasTrack
+                          ? kBottomNavigationBarHeight + 100
+                          : kBottomNavigationBarHeight + 16,
                     ),
-                  )
-                : const Icon(CupertinoIcons.person);
-            return IconButton(
-              icon: icon,
-              onPressed: () => context.push('/setting'),
-            );
-          }),
-        ],
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-      ),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Stack(
-          children: [
-            SizedBox(height: MediaQuery.of(context).size.height + 100),
-            Obx(
-              () => Skeletonizer(
-                enabled: _isLoading,
-                containersColor: Colors.grey.shade800,
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  padding: EdgeInsets.only(
-                    bottom: audioPlayerController.hasTrack
-                        ? kBottomNavigationBarHeight + 100
-                        : kBottomNavigationBarHeight + 16,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _isLoading ? 5 : _sections.length,
+                    itemBuilder: (context, index) {
+                      final section = _isLoading
+                          ? dummySection
+                          : _sections[index];
+                      return SectionWidget(section: section);
+                    },
                   ),
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: _isLoading ? 5 : _sections.length,
-                  itemBuilder: (context, index) {
-                    final section = _isLoading
-                        ? dummySection
-                        : _sections[index];
-                    return SectionWidget(section: section);
-                  },
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

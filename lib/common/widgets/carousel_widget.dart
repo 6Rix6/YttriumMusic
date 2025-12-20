@@ -14,9 +14,9 @@ class TwoRowItemCarouselWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         separatorBuilder: (context, index) => const SizedBox(width: 16),
         scrollDirection: Axis.horizontal,
-        itemCount: section.items!.length,
+        itemCount: section.contents!.length,
         itemBuilder: (context, index) {
-          final item = section.items![index];
+          final item = section.contents![index];
           return TowRowItemWidget(item: item);
         },
       ),
@@ -44,7 +44,7 @@ class _ResponsiveLisItemCarouselWidgetState
       child: PageView.builder(
         controller: _pageController,
         padEnds: false,
-        itemCount: ((widget.section.items?.length ?? 0) / 4).ceil(),
+        itemCount: ((widget.section.contents?.length ?? 0) / 4).ceil(),
         itemBuilder: (context, index) {
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -52,9 +52,11 @@ class _ResponsiveLisItemCarouselWidgetState
               spacing: 8,
               children: [
                 for (int i = 0; i < 4; i++)
-                  if ((index * 4 + i) < (widget.section.items?.length ?? 0))
+                  if ((index * 4 + i) < (widget.section.contents?.length ?? 0))
                     ResponsiveListItemWidget(
-                      item: widget.section.items![index * 4 + i] as yt.SongItem,
+                      item:
+                          widget.section.contents![index * 4 + i]
+                              as yt.SongItem,
                     ),
               ],
             ),
