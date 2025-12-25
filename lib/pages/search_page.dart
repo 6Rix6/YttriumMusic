@@ -24,7 +24,8 @@ class _SearchPageState extends State<SearchPage> {
   Future<void> _search(String query) async {
     if (query.isNotEmpty) {
       final shouldClear =
-          await context.push('/search/${Uri.encodeComponent(query)}') as bool?;
+          await context.push('/search/${Uri.encodeComponent(query.trim())}')
+              as bool?;
       if (shouldClear == true) {
         _searchController.clear();
       }
