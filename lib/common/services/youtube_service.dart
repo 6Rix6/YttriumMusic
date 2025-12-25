@@ -63,10 +63,11 @@ class YoutubeService extends GetxService {
     youtube.cookie = '';
   }
 
-  Future<void> playSong(yt.SongItem song) async {
-    final player = await youtube.player(
-      song.id,
-      client: yt.YouTubeClient.android,
+  Future<void> playSong(String id, {yt.SongItem? fallbackSong}) async {
+    final player = await youtube.player(id, client: yt.YouTubeClient.android);
+    final webPlayer = await youtube.player(
+      id,
+      client: yt.YouTubeClient.webRemix,
     );
     player.when(
       success: (playerResponse) async {
@@ -81,13 +82,22 @@ class YoutubeService extends GetxService {
         final bestFormat = audioFormats.reduce(
           (a, b) => (a.bitrate > b.bitrate) ? a : b,
         );
+        final detail = playerResponse.videoDetails;
 
-        final artworkUrl = song.thumbnails?.getBest()?.url;
+        final artworkUrl =
+            webPlayer.value.videoDetails?.thumbnail.getBest()?.url ??
+            playerResponse.videoDetails?.thumbnail.getBest()?.url ??
+            fallbackSong?.thumbnails?.getBest()?.url;
+        final title = detail?.title ?? fallbackSong?.title ?? "";
+        final artist =
+            detail?.author ??
+            fallbackSong?.artists?.map((e) => e.name).join(', ') ??
+            "";
 
         await audioPlayerController.loadAudio(
           bestFormat.url!,
-          title: song.title,
-          artist: song.artists?.map((e) => e.name).join(', '),
+          title: title,
+          artist: artist,
           artworkUrl: artworkUrl,
         );
         audioPlayerController.play();

@@ -17,7 +17,8 @@ class SongItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final aspectRatio = item.isVideo ? 16 / 9 : 1;
     return GestureDetector(
-      onTap: () => Get.find<YoutubeService>().playSong(item),
+      onTap: () =>
+          Get.find<YoutubeService>().playSong(item.id, fallbackSong: item),
       child: SizedBox(
         width: aspectRatio * kImageHeight,
         child: Column(
@@ -243,7 +244,8 @@ class ResponsiveListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.find<YoutubeService>().playSong(item),
+      onTap: () =>
+          Get.find<YoutubeService>().playSong(item.id, fallbackSong: item),
       child: SizedBox(
         width: double.infinity,
         height: 72,

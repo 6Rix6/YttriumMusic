@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
-import 'package:yttrium_music/common/widgets/button_widgets.dart';
 import 'package:yttrium_music/common/widgets/carousel_widget.dart';
+import 'package:yttrium_music/common/widgets/navigation_button.dart';
 
 class SectionWidget extends StatelessWidget {
   final yt.Section section;
@@ -67,8 +67,18 @@ class SectionWidget extends StatelessWidget {
                       ],
                     ),
                   ),
-                  if (section.header?.moreButton != null)
-                    MoreButtonWidget(moreButton: section.header!.moreButton!),
+                  Builder(
+                    builder: (context) {
+                      final button = section.header?.moreButton;
+                      if (button == null || button.navigationEndpoint == null) {
+                        return const SizedBox.shrink();
+                      }
+                      return NavigationButton(
+                        endpoint: button.navigationEndpoint!,
+                        text: button.text?.toString() ?? "",
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:innertube_dart/innertube_dart.dart';
+// import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/common/services/youtube_service.dart';
+import 'package:yttrium_music/common/widgets/navigation_button.dart';
 import 'package:yttrium_music/common/widgets/yt_item_widget.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 
@@ -17,21 +19,23 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController _searchController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
-  Future<void> _search() async {
-    final query = _searchController.text;
+  Future<void> _search(String query) async {
     if (query.isNotEmpty) {
       final shouldClear =
           await context.push('/search/${Uri.encodeComponent(query)}') as bool?;
       if (shouldClear == true) {
         _searchController.clear();
       }
+      _focusNode.requestFocus();
     }
   }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -60,16 +64,25 @@ class _SearchPageState extends State<SearchPage> {
           child: TextField(
             controller: _searchController,
             autofocus: true,
+            focusNode: _focusNode,
             textInputAction: TextInputAction.search,
             textAlignVertical: TextAlignVertical.center,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16),
               hintText: t.search.hint,
               isDense: true,
-              prefixIcon: Icon(CupertinoIcons.search, size: 20),
               border: InputBorder.none,
-              suffixIcon: null,
+              suffixIcon: IconButton(
+                iconSize: 20,
+                padding: EdgeInsets.zero,
+                icon: Icon(CupertinoIcons.xmark),
+                onPressed: () {
+                  _searchController.clear();
+                  _focusNode.requestFocus();
+                },
+              ),
             ),
-            onSubmitted: (_) => _search(),
+            onSubmitted: (_) => _search(_searchController.text),
           ),
         ),
       ),
@@ -80,7 +93,12 @@ class _SearchPageState extends State<SearchPage> {
 
 class SearchResultPage extends StatefulWidget {
   final String query;
-  const SearchResultPage({super.key, required this.query});
+  final SearchFilter filter;
+  const SearchResultPage({
+    super.key,
+    required this.query,
+    this.filter = SearchFilter.all,
+  });
 
   @override
   State<SearchResultPage> createState() => _SearchResultPageState();
@@ -91,7 +109,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
   final TextEditingController _searchController = TextEditingController();
   final AudioPlayerController _playerController =
       Get.find<AudioPlayerController>();
-  SearchResult? _searchResult;
+  // yt.SearchPage? _searchResult;
+  MusicCardShelfSection? _musicCardShelfSection;
+  MusicShelfSection? _musicShelfSection;
   bool _isLoading = true;
 
   @override
@@ -104,18 +124,23 @@ class _SearchResultPageState extends State<SearchResultPage> {
   Future<void> _search() async {
     final query = widget.query;
     if (query.isNotEmpty) {
-      final result = await _youtubeService.youtube.search(
-        query,
-        SearchFilter.all,
-      );
+      final result = await _youtubeService.youtube.search(query, widget.filter);
       result.when(
         success: (value) {
           setState(() {
-            _searchResult = value;
+            // _searchResult = value;
+            if (value.tabs.firstOrNull case final tab?) {
+              _musicCardShelfSection = tab.contents
+                  .whereType<MusicCardShelfSection>()
+                  .firstOrNull;
+              _musicShelfSection = tab.contents
+                  .whereType<MusicShelfSection>()
+                  .firstOrNull;
+            }
           });
         },
         error: (error) {
-          Get.snackbar("Error", error.toString());
+          Get.snackbar(t.general.error, error.toString());
         },
       );
       setState(() {
@@ -126,6 +151,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SafeArea(
       top: false,
       child: Scaffold(
@@ -139,7 +165,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
           title: Container(
             height: 40,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainer,
+              color: theme.colorScheme.surfaceContainer,
               borderRadius: BorderRadius.circular(20),
             ),
             child: TextField(
@@ -150,9 +176,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
               readOnly: true,
               textAlignVertical: TextAlignVertical.center,
               decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
                 hintText: t.search.hint,
                 isDense: true,
-                prefixIcon: Icon(CupertinoIcons.search, size: 20),
                 border: InputBorder.none,
                 suffixIcon: IconButton(
                   iconSize: 20,
@@ -174,24 +200,163 @@ class _SearchResultPageState extends State<SearchResultPage> {
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
                 child: Obx(
-                  () => ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: _searchResult?.items.length ?? 0,
-                    padding: const EdgeInsets.symmetric(horizontal: 16).add(
-                      EdgeInsets.only(
-                        bottom:
-                            kBottomNavigationBarHeight +
-                            _playerController.playerHeight,
+                  () => Column(
+                    children: [
+                      if (_musicCardShelfSection != null)
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            children: [
+                              // card header
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.secondaryContainer
+                                      .withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(12),
+                                  ),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    spacing: 8,
+                                    children: [
+                                      Row(
+                                        spacing: 12,
+                                        children: [
+                                          Container(
+                                            width: 56,
+                                            height: 56,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  _musicCardShelfSection!
+                                                          .thumbnails
+                                                          ?.getBest()
+                                                          ?.url ??
+                                                      "",
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  _musicCardShelfSection!
+                                                          .title ??
+                                                      "",
+                                                  style: theme
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(fontSize: 20),
+                                                ),
+                                                Text(
+                                                  _musicCardShelfSection!
+                                                          .subtitle
+                                                          ?.toString() ??
+                                                      "",
+                                                  style:
+                                                      theme.textTheme.bodySmall,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      if (_musicCardShelfSection?.buttons !=
+                                              null &&
+                                          _musicCardShelfSection!
+                                              .buttons!
+                                              .isNotEmpty)
+                                        Builder(
+                                          builder: (context) {
+                                            final buttons =
+                                                _musicCardShelfSection!
+                                                    .buttons!;
+                                            return Row(
+                                              spacing: 12,
+                                              children: buttons
+                                                  .map(
+                                                    (e) => Expanded(
+                                                      child: NavigationButton(
+                                                        endpoint: e.command!,
+                                                        isDisabled:
+                                                            e.isDisabled ??
+                                                            false,
+                                                        text: e.text.toString(),
+                                                        iconString:
+                                                            e.icon?.iconType,
+                                                        primary:
+                                                            e.style ==
+                                                            "STYLE_DARK_ON_WHITE",
+                                                      ),
+                                                    ),
+                                                  )
+                                                  .toList(),
+                                            );
+                                          },
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              // card content
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.surfaceContainer
+                                      .withValues(alpha: 0.5),
+                                  borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.circular(12),
+                                  ),
+                                ),
+                                child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      _musicCardShelfSection
+                                          ?.contents
+                                          ?.length ??
+                                      0,
+                                  padding: const EdgeInsets.all(8),
+                                  itemBuilder: (context, index) {
+                                    final item = _musicCardShelfSection
+                                        ?.contents?[index];
+                                    if (item is SongItem) {
+                                      return ResponsiveListItemWidget(
+                                        item: item,
+                                      );
+                                    }
+                                    return const SizedBox.shrink();
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: _musicShelfSection?.contents?.length ?? 0,
+                        padding: const EdgeInsets.symmetric(horizontal: 16).add(
+                          EdgeInsets.only(
+                            bottom: _playerController.playerHeight,
+                          ),
+                        ),
+                        itemBuilder: (context, index) {
+                          final item = _musicShelfSection?.contents?[index];
+                          if (item is SongItem) {
+                            return ResponsiveListItemWidget(item: item);
+                          }
+                          return const SizedBox.shrink();
+                        },
                       ),
-                    ),
-                    itemBuilder: (context, index) {
-                      final item = _searchResult?.items[index];
-                      if (item is SongItem) {
-                        return ResponsiveListItemWidget(item: item);
-                      }
-                      return const SizedBox.shrink();
-                    },
+                    ],
                   ),
                 ),
               ),
