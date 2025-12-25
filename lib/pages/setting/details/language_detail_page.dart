@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yttrium_music/common/controllers/settings_controller.dart';
-import 'package:yttrium_music/common/widgets/custom_widgets.dart';
-import 'package:yttrium_music/common/widgets/dialogs/dialog_with_list.dart';
-import 'package:yttrium_music/common/widgets/modal_manager.dart';
-import 'package:yttrium_music/common/enums/locale.dart';
+import 'package:yttrium_music/core/controllers/settings_controller.dart';
+import 'package:yttrium_music/widgets/custom_widgets.dart';
+import 'package:yttrium_music/widgets/dialogs/dialog_with_list.dart';
+import 'package:yttrium_music/widgets/modal_manager.dart';
+import 'package:yttrium_music/core/enums/locale.dart';
 import 'package:yttrium_music/pages/setting/setting_detail_page.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 

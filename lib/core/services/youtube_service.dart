@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
-import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
-import 'package:yttrium_music/common/controllers/auth_controller.dart';
-import 'package:yttrium_music/common/controllers/settings_controller.dart';
-import 'package:yttrium_music/common/controllers/theme_controller.dart';
+import 'package:yttrium_music/core/controllers/audio_player_controller.dart';
+import 'package:yttrium_music/core/controllers/auth_controller.dart';
+import 'package:yttrium_music/core/controllers/settings_controller.dart';
+import 'package:yttrium_music/core/controllers/theme_controller.dart';
 
 class YoutubeService extends GetxService {
   late final yt.YouTube youtube;

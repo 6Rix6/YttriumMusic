@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yttrium_music/common/services/storage_service.dart';
-import 'package:yttrium_music/common/enums/locale.dart';
+import 'package:yttrium_music/core/services/storage_service.dart';
+import 'package:yttrium_music/core/enums/locale.dart';
 
 /// Controller for managing application settings
 /// To add a new setting:

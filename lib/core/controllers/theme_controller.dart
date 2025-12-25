@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yttrium_music/common/controllers/settings_controller.dart';
+import 'package:yttrium_music/core/controllers/settings_controller.dart';
 
 class ThemeController extends GetxController {
   final SettingsController settingsController;

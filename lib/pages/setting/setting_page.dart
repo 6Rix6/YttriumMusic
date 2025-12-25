@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
-import 'package:yttrium_music/common/controllers/auth_controller.dart';
-import 'package:yttrium_music/common/services/youtube_service.dart';
+import 'package:yttrium_music/core/controllers/auth_controller.dart';
+import 'package:yttrium_music/core/services/youtube_service.dart';
 import 'package:yttrium_music/pages/signin_page.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 

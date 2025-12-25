@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:innertube_dart/innertube_dart.dart';
 import 'package:get/get.dart';
-import 'package:yttrium_music/common/services/youtube_service.dart';
-import 'package:yttrium_music/common/widgets/youtube_icon.dart';
+import 'package:yttrium_music/core/services/youtube_service.dart';
+import 'package:yttrium_music/widgets/youtube_icon.dart';
 
 enum ButtonSize { small, medium, large }
 

@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:skeletonizer/skeletonizer.dart';
-import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
-import 'package:yttrium_music/common/controllers/auth_controller.dart';
-import 'package:yttrium_music/common/services/youtube_service.dart';
-import 'package:yttrium_music/common/consts/dummies.dart';
-import 'package:yttrium_music/common/widgets/section_widget.dart';
+import 'package:yttrium_music/core/controllers/audio_player_controller.dart';
+import 'package:yttrium_music/core/controllers/auth_controller.dart';
+import 'package:yttrium_music/core/services/youtube_service.dart';
+import 'package:yttrium_music/core/consts/dummies.dart';
+import 'package:yttrium_music/widgets/section_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

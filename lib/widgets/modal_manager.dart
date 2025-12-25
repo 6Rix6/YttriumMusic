@@ -5,8 +5,8 @@ import 'package:flutter/material.dart' as material;
 import 'package:flutter/material.dart';
 import 'package:nampack/extensions/navigator_ext.dart';
 import 'package:nampack/navigation/transition_type.dart';
-import 'package:yttrium_music/common/utils/extensions.dart';
-import 'package:yttrium_music/common/utils/context_extensions.dart';
+import 'package:yttrium_music/core/utils/extensions.dart';
+import 'package:yttrium_music/core/utils/context_extensions.dart';
 
 class ModalManager {
   final BuildContext context;

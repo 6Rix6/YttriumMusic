@@ -18,11 +18,11 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
-import 'package:yttrium_music/common/utils/duration_format.dart';
+import 'package:yttrium_music/core/controllers/audio_player_controller.dart';
+import 'package:yttrium_music/core/utils/duration_format.dart';
 import 'track_image.dart';
 import 'track_info.dart';
-import 'package:yttrium_music/common/utils/player_ui_utils.dart';
+import 'package:yttrium_music/core/utils/player_ui_utils.dart';
 
 enum PlayerState { mini, expanded, queue }
 

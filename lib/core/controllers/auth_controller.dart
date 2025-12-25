@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:yttrium_music/common/services/storage_service.dart';
+import 'package:yttrium_music/core/services/storage_service.dart';
 
 class AuthController extends GetxController {
   final StorageService storageService;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
-import 'package:yttrium_music/common/widgets/carousel_widget.dart';
-import 'package:yttrium_music/common/widgets/navigation_button.dart';
+import 'package:yttrium_music/widgets/carousel_widget.dart';
+import 'package:yttrium_music/widgets/navigation_button.dart';
 
 class SectionWidget extends StatelessWidget {
   final yt.Section section;

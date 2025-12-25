@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:animations/animations.dart';
 import 'package:figma_squircle/figma_squircle.dart';
 import 'package:flutter/material.dart';
-import 'package:yttrium_music/common/utils/player_ui_utils.dart';
+import 'package:yttrium_music/core/utils/player_ui_utils.dart';
 
 class TrackImage extends StatelessWidget {
   const TrackImage({

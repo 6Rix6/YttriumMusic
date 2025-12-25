@@ -8,20 +8,20 @@ import 'package:dynamic_color/dynamic_color.dart';
 
 import 'package:yttrium_music/route.dart';
 
-import 'package:yttrium_music/common/services/storage_service.dart';
-import 'package:yttrium_music/common/services/youtube_service.dart';
-import 'package:yttrium_music/common/services/audio_handler.dart';
-import 'package:yttrium_music/common/controllers/audio_player_controller.dart';
-import 'package:yttrium_music/common/controllers/auth_controller.dart';
-import 'package:yttrium_music/common/controllers/settings_controller.dart';
-import 'package:yttrium_music/common/controllers/theme_controller.dart';
-import 'package:yttrium_music/common/controllers/youtube_search_controller.dart';
+import 'package:yttrium_music/core/services/storage_service.dart';
+import 'package:yttrium_music/core/services/youtube_service.dart';
+import 'package:yttrium_music/core/services/audio_handler.dart';
+import 'package:yttrium_music/core/controllers/audio_player_controller.dart';
+import 'package:yttrium_music/core/controllers/auth_controller.dart';
+import 'package:yttrium_music/core/controllers/settings_controller.dart';
+import 'package:yttrium_music/core/controllers/theme_controller.dart';
+import 'package:yttrium_music/core/controllers/youtube_search_controller.dart';
 
-import 'package:yttrium_music/common/widgets/player/player.dart';
-import 'package:yttrium_music/common/widgets/player/wallpaper.dart';
+import 'package:yttrium_music/widgets/player/player.dart';
+import 'package:yttrium_music/widgets/player/wallpaper.dart';
 
 import 'package:yttrium_music/i18n/translations.g.dart';
-import 'package:yttrium_music/common/utils/extensions.dart';
+import 'package:yttrium_music/core/utils/extensions.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

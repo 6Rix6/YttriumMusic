@@ -1,7 +1,7 @@
 // audio_player_controller.dart
 import 'package:get/get.dart';
 import 'package:audio_service/audio_service.dart';
-import 'package:yttrium_music/common/services/audio_handler.dart'; // MyAudioHandlerの型キャスト用
+import 'package:yttrium_music/core/services/audio_handler.dart'; // MyAudioHandlerの型キャスト用
 
 class AudioPlayerController extends GetxController {
   late final AudioHandler audioHandler;

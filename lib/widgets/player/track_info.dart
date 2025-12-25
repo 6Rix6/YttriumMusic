@@ -1,7 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:yttrium_music/common/utils/player_ui_utils.dart';
+import 'package:yttrium_music/core/utils/player_ui_utils.dart';
 import 'package:text_scroll/text_scroll.dart';
 
 class TrackInfo extends StatelessWidget {

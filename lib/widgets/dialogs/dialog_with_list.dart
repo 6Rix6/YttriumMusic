@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:yttrium_music/common/widgets/custom_widgets.dart';
-import 'package:yttrium_music/common/widgets/modal_manager.dart';
+import 'package:yttrium_music/widgets/custom_widgets.dart';
+import 'package:yttrium_music/widgets/modal_manager.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 
 class DialogWithList extends StatelessWidget {
