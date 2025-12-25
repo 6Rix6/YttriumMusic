@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
@@ -8,9 +7,28 @@ import 'package:yttrium_music/widgets/renderers/thumbnail_renderer.dart';
 
 const double kImageHeight = 160;
 
-class SongItemWidget extends StatelessWidget {
+class TowRowItemWidget extends StatelessWidget {
+  final yt.YTItem item;
+  const TowRowItemWidget({super.key, required this.item});
+
+  @override
+  Widget build(BuildContext context) {
+    if (item is yt.SongItem) {
+      return _SongItemWidget(item: item as yt.SongItem);
+    } else if (item is yt.AlbumItem) {
+      return _AlbumItemWidget(item: item as yt.AlbumItem);
+    } else if (item is yt.PlaylistItem) {
+      return _PlaylistItemWidget(item: item as yt.PlaylistItem);
+    } else if (item is yt.ArtistItem) {
+      return _ArtistItemWidget(item: item as yt.ArtistItem);
+    }
+    return const SizedBox.shrink();
+  }
+}
+
+class _SongItemWidget extends StatelessWidget {
   final yt.SongItem item;
-  const SongItemWidget({super.key, required this.item});
+  const _SongItemWidget({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -65,9 +83,9 @@ class SongItemWidget extends StatelessWidget {
   }
 }
 
-class AlbumItemWidget extends StatelessWidget {
+class _AlbumItemWidget extends StatelessWidget {
   final yt.AlbumItem item;
-  const AlbumItemWidget({super.key, required this.item});
+  const _AlbumItemWidget({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -123,9 +141,9 @@ class AlbumItemWidget extends StatelessWidget {
   }
 }
 
-class PlaylistItemWidget extends StatelessWidget {
+class _PlaylistItemWidget extends StatelessWidget {
   final yt.PlaylistItem item;
-  const PlaylistItemWidget({super.key, required this.item});
+  const _PlaylistItemWidget({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +195,9 @@ class PlaylistItemWidget extends StatelessWidget {
   }
 }
 
-class ArtistItemWidget extends StatelessWidget {
+class _ArtistItemWidget extends StatelessWidget {
   final yt.ArtistItem item;
-  const ArtistItemWidget({super.key, required this.item});
+  const _ArtistItemWidget({required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -233,87 +251,5 @@ class ArtistItemWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class ResponsiveListItemWidget extends StatelessWidget {
-  final yt.SongItem item;
-  const ResponsiveListItemWidget({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () =>
-          Get.find<YoutubeService>().playSong(item.id, fallbackSong: item),
-      child: SizedBox(
-        width: double.infinity,
-        height: 72,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 16,
-          children: [
-            Container(
-              width: 64,
-              height: 64,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(item.thumbnails?.getBest()?.url ?? ""),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    item.subtitle.toString(),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                      color: Theme.of(context).hintColor,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(CupertinoIcons.ellipsis),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TowRowItemWidget extends StatelessWidget {
-  final yt.YTItem item;
-  const TowRowItemWidget({super.key, required this.item});
-
-  @override
-  Widget build(BuildContext context) {
-    if (item is yt.SongItem) {
-      return SongItemWidget(item: item as yt.SongItem);
-    } else if (item is yt.AlbumItem) {
-      return AlbumItemWidget(item: item as yt.AlbumItem);
-    } else if (item is yt.PlaylistItem) {
-      return PlaylistItemWidget(item: item as yt.PlaylistItem);
-    } else if (item is yt.ArtistItem) {
-      return ArtistItemWidget(item: item as yt.ArtistItem);
-    }
-    return const SizedBox.shrink();
   }
 }
