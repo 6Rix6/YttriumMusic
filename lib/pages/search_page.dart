@@ -6,8 +6,8 @@ import 'package:innertube_dart/innertube_dart.dart';
 // import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:yttrium_music/core/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/core/services/youtube_service.dart';
-import 'package:yttrium_music/widgets/navigation_button.dart';
-import 'package:yttrium_music/widgets/yt_item_widget.dart';
+import 'package:yttrium_music/widgets/renderers/navigation_button.dart';
+import 'package:yttrium_music/widgets/renderers/yt_item_widget.dart';
 import 'package:yttrium_music/i18n/translations.g.dart';
 
 class SearchPage extends StatefulWidget {

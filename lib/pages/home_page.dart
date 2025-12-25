@@ -8,7 +8,7 @@ import 'package:yttrium_music/core/controllers/audio_player_controller.dart';
 import 'package:yttrium_music/core/controllers/auth_controller.dart';
 import 'package:yttrium_music/core/services/youtube_service.dart';
 import 'package:yttrium_music/core/consts/dummies.dart';
-import 'package:yttrium_music/widgets/section_widget.dart';
+import 'package:yttrium_music/widgets/renderers/section_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
-import 'package:yttrium_music/widgets/yt_item_widget.dart';
+import 'package:yttrium_music/widgets/renderers/yt_item_widget.dart';
 
 class TwoRowItemCarouselWidget extends StatelessWidget {
   final yt.Section section;

@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 import 'package:go_router/go_router.dart';
 import 'package:innertube_dart/innertube_dart.dart' as yt;
 import 'package:yttrium_music/core/services/youtube_service.dart';
-// import 'package:yttrium_music/pages/album_page.dart';
-import 'package:yttrium_music/widgets/thumbnail_renderer.dart';
+import 'package:yttrium_music/widgets/renderers/thumbnail_renderer.dart';
 
 const double kImageHeight = 160;
 
