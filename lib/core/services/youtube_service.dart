@@ -82,7 +82,8 @@ class YoutubeService extends GetxService {
         final bestFormat = audioFormats.reduce(
           (a, b) => (a.bitrate > b.bitrate) ? a : b,
         );
-        final detail = playerResponse.videoDetails;
+        final detail =
+            webPlayer.value.videoDetails ?? playerResponse.videoDetails;
 
         final artworkUrl =
             webPlayer.value.videoDetails?.thumbnail.getBest()?.url ??
