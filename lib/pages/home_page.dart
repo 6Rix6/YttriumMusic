@@ -168,9 +168,7 @@ class _HomePageState extends State<HomePage> {
                   child: ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.only(
-                      bottom: audioPlayerController.hasTrack
-                          ? kBottomNavigationBarHeight + 100
-                          : kBottomNavigationBarHeight + 16,
+                      bottom: audioPlayerController.playerHeight,
                     ),
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _isLoading ? 5 : _sections.length,

@@ -202,143 +202,9 @@ class _SearchResultPageState extends State<SearchResultPage> {
                 child: Obx(
                   () => Column(
                     children: [
+                      // MusicCardShelf Card
                       if (_musicCardShelfSection != null)
-                        Container(
-                          padding: EdgeInsets.all(16),
-                          child: Column(
-                            children: [
-                              // card header
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: theme.colorScheme.secondaryContainer
-                                      .withValues(alpha: 0.5),
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12),
-                                  child: Column(
-                                    spacing: 8,
-                                    children: [
-                                      Row(
-                                        spacing: 12,
-                                        children: [
-                                          Container(
-                                            width: 56,
-                                            height: 56,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: NetworkImage(
-                                                  _musicCardShelfSection!
-                                                          .thumbnails
-                                                          ?.getBest()
-                                                          ?.url ??
-                                                      "",
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  _musicCardShelfSection!
-                                                          .title ??
-                                                      "",
-                                                  style: theme
-                                                      .textTheme
-                                                      .bodyMedium
-                                                      ?.copyWith(fontSize: 20),
-                                                ),
-                                                Text(
-                                                  _musicCardShelfSection!
-                                                          .subtitle
-                                                          ?.toString() ??
-                                                      "",
-                                                  style:
-                                                      theme.textTheme.bodySmall,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      if (_musicCardShelfSection?.buttons !=
-                                              null &&
-                                          _musicCardShelfSection!
-                                              .buttons!
-                                              .isNotEmpty)
-                                        Builder(
-                                          builder: (context) {
-                                            final buttons =
-                                                _musicCardShelfSection!
-                                                    .buttons!;
-                                            return Row(
-                                              spacing: 12,
-                                              children: buttons
-                                                  .map(
-                                                    (e) => Expanded(
-                                                      child: NavigationButton(
-                                                        endpoint: e.command!,
-                                                        isDisabled:
-                                                            e.isDisabled ??
-                                                            false,
-                                                        text: e.text.toString(),
-                                                        iconString:
-                                                            e.icon?.iconType,
-                                                        primary:
-                                                            e.style ==
-                                                            "STYLE_DARK_ON_WHITE",
-                                                      ),
-                                                    ),
-                                                  )
-                                                  .toList(),
-                                            );
-                                          },
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              // card content
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: theme.colorScheme.surfaceContainer
-                                      .withValues(alpha: 0.5),
-                                  borderRadius: BorderRadius.vertical(
-                                    bottom: Radius.circular(12),
-                                  ),
-                                ),
-                                child: ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      _musicCardShelfSection
-                                          ?.contents
-                                          ?.length ??
-                                      0,
-                                  padding: const EdgeInsets.all(8),
-                                  itemBuilder: (context, index) {
-                                    final item = _musicCardShelfSection
-                                        ?.contents?[index];
-                                    if (item is SongItem) {
-                                      return ResponsiveListItemWidget(
-                                        item: item,
-                                      );
-                                    }
-                                    return const SizedBox.shrink();
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        MusicCardShelfWidget(section: _musicCardShelfSection!),
                       ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -360,6 +226,143 @@ class _SearchResultPageState extends State<SearchResultPage> {
                   ),
                 ),
               ),
+      ),
+    );
+  }
+}
+
+class MusicCardShelfWidget extends StatelessWidget {
+  final MusicCardShelfSection section;
+
+  const MusicCardShelfWidget({super.key, required this.section});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final hasContent = section.contents?.isNotEmpty ?? false;
+    final hasContentTitle = section.contentTitle != null;
+    return Container(
+      padding: EdgeInsets.all(16),
+      child: Column(
+        children: [
+          // card header
+          Container(
+            decoration: BoxDecoration(
+              color: theme.colorScheme.secondaryContainer.withValues(
+                alpha: 0.5,
+              ),
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12),
+                bottom: hasContent ? Radius.circular(0) : Radius.circular(12),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                spacing: 8,
+                children: [
+                  Row(
+                    spacing: 12,
+                    children: [
+                      Container(
+                        width: 56,
+                        height: 56,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image: NetworkImage(
+                              section.thumbnails?.getBest()?.url ?? "",
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              section.title ?? "",
+                              style: theme.textTheme.bodyMedium?.copyWith(
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              section.subtitle?.toString() ?? "",
+                              style: theme.textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (section.buttons != null && section.buttons!.isNotEmpty)
+                    Row(
+                      spacing: 12,
+                      children: section.buttons!
+                          .map(
+                            (e) => Expanded(
+                              child: NavigationButton(
+                                endpoint: e.command!,
+                                isDisabled: e.isDisabled ?? false,
+                                text: e.text.toString(),
+                                iconString: e.icon?.iconType,
+                                primary: e.style == "STYLE_DARK_ON_WHITE",
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    ),
+                ],
+              ),
+            ),
+          ),
+          // card content
+          if (hasContent)
+            Container(
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainer.withValues(
+                  alpha: 0.5,
+                ),
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(12),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (hasContentTitle)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                      ).add(const EdgeInsets.only(top: 4)),
+                      child: Text(
+                        section.contentTitle!,
+                        style: TextStyle(color: theme.hintColor),
+                      ),
+                    ),
+                  ListView.builder(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: section.contents?.length ?? 0,
+                    padding: EdgeInsets.only(
+                      left: 8,
+                      right: 8,
+                      bottom: 4,
+                      top: hasContentTitle ? 0 : 4,
+                    ),
+                    itemBuilder: (context, index) {
+                      final item = section.contents?[index];
+                      if (item is SongItem) {
+                        return ResponsiveListItemWidget(item: item);
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }
