@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
   // ignore: unused_field
   List<yt.ChipCloudChipRenderer> _chips = [];
   yt.Thumbnails? _background;
-  yt.Continuations? _continuations;
+  yt.Continuation? _continuations;
   bool _isLoading = true;
   bool _isLoadingMore = false;
   final youtubeController = Get.find<YoutubeService>();
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     _fetchHomeFeed();
   }
 
-  Future<void> _fetchHomeFeed({yt.Continuations? continuation}) async {
+  Future<void> _fetchHomeFeed({yt.Continuation? continuation}) async {
     final result = await youtubeController.youtube.home(
       continuation: continuation,
     );
